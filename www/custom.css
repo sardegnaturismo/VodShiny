@@ -1,0 +1,29 @@
+.content-wrapper,
+.right-side {
+  background-color: #ffffff;
+}
+.fieldgroup{
+        border: solid;
+        border-width: 0.7px;
+        border-color: #cccccc;
+        border-radius: 20px;
+        padding: 8px;
+}
+.fieldlegend{
+    font-size: 15px;
+    color: #A9A9A9;
+}
+
+#res_panel{
+        color: red;
+        margin-top: 15px;
+}
+
+#vis_panel{
+        color: red;
+        margin-top: 15px;
+}
+
+.main-sidebar{
+        width: 200px;
+}
