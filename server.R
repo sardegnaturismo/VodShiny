@@ -233,19 +233,19 @@ shinyServer(function(input, output, session) {
                         
                 })
                 
-                # output$com_prov <- renderPlotly({
-                #         italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
-                #         ###here we filter by municipality
-                #         filtered_italians <- filter(italians, comune_name == input$com_id)
-                #         visitors <- get_tot_visitors_by_prov(filtered_italians, preset = 21)
-                #         
-                #         selected_color = c(rainbow(length(visitors[,1])))  
-                #         p <- plot_ly(data = visitors, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color)) %>%
-                #                 layout(title = paste("Comune di Destinazione: ", input$com_id),  
-                #                        yaxis = list(tickfont = list(size = 8)), xaxis = list(title = "Regione di provenienza", tickfont = list(size = 8)))
-                #         
-                #         
-                # })
+                output$com_prov <- renderPlotly({
+                        italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
+                        ###here we filter by municipality
+                        filtered_italians <- filter(italians, comune_name == input$com_id)
+                        visitors <- get_tot_visitors_by_prov(filtered_italians, preset = 21)
+
+                        selected_color = c(rainbow(length(visitors[,1])))
+                        p <- plot_ly(data = visitors, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color)) %>%
+                                layout(title = paste("Comune di Destinazione: ", input$com_id),
+                                       yaxis = list(tickfont = list(size = 8)), xaxis = list(title = "Regione di provenienza", tickfont = list(size = 8)))
+
+
+                })
 })        
 
 
