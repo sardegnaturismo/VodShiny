@@ -1,5 +1,9 @@
+
+
 #Here the reference dataset is 'sardegna_destinations_for_municipalities.csv'
 #The function allows to extract the data related to the municipality of interest
+
+period = c("Sept, 15", "Oct, 15", "Nov, 15", "Dic, 15", "Jan, 16", "Feb, 16", "Mar, 16", "Apr, 16", "May, 16", "Jun, 16", "Jul, 16", "Ago, 16", "Sept, 16")
 
 destination_by_municipalities <- function(dataset, municipality_name){
 
@@ -10,6 +14,19 @@ destination_by_municipalities <- function(dataset, municipality_name){
   
   res <- aggregate(d$unique_visitors ~ d$origin_municipality, FUN = sum)
   names(res) <- c("origin", "visitors")
+  res <- res[order(res$visitors, decreasing = T), ]
   res
+}
 
+destination_by_month <- function(dataset, municipality_name){
+        ###here we aggregate the visitors to the specified municipality by month
+        dataset = dataset[dataset$municipality == municipality_name,]
+        res <- aggregate(dataset$unique_visitors ~ dataset$day, FUN = sum)
+        names(res) <- c("month", "visitors")
+        res <- res[order(as.Date(res$month, format="%d/%m/%Y"), decreasing = F),]
+        row.names(res) <- NULL
+        res <- cbind(period, res)
+        res$period <- factor(res$period, levels = res[["period"]])
+ 
+        res
 }
