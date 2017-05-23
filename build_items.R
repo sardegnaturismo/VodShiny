@@ -238,8 +238,8 @@ tabItems(
                         )
                 ),
                 create_tab("cov_tot", "h_cov_tot", "h_cov_res", "origins1"),
-                create_tab("cov_vis", "h_cov_it", "h_cov_st", "origins2")
-                #create_tab_bar(tabname = "com_prov", label = "Comune di destinazione: ", plot_id1 = "plot_com_prov",input_id1 = "com_id")
+                create_tab("cov_vis", "h_cov_it", "h_cov_st", "origins2"),
+                create_tab_bar(tabname = "com_prov", label = "Comune di destinazione: ", plot_id1 = "plot_com_prov",input_id1 = "com_id")
                 
              
         )
