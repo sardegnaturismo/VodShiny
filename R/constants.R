@@ -1,0 +1,2 @@
+province_symbols = list("Cagliari" = "CA", "Medio Campidano" = "VS", "Oristano" = "OR", "Sassari" = "SS",
+                        "Nuoro" = "NU", "Olbia-Tempio" = "OT", "Ogliastra" = "OG", "Carbonia-Iglesias" = "CI")
