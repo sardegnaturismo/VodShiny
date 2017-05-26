@@ -1,9 +1,10 @@
-library(shiny)
-library(shinydashboard)
-library(data.table)
-library(dplyr)
-library(plotly)
-library(RColorBrewer)
+require(shiny)
+require(data.table)
+require(shinydashboard)
+require(data.table)
+require(dplyr)
+require(plotly)
+require(RColorBrewer)
 source("R/destination_by_municipalities.R")
 source("R/destination_by_provinces.R")
 source("R/presence.R")
@@ -140,11 +141,12 @@ shinyServer(function(input, output, session) {
                 output$tot_it <-renderPlotly({
                         it <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
                         # st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
-                        visitors <- get_tot_visitors_by_prov(it, input$preset_it)
+                        visitors <- get_tot_visitors_by_prov2(it, input$preset_it)
                         # foreigners <- get_tot_foreigners_by_prov(st)
                         col_it = colors
                         if (input$color1 == "blue"){
-                            col_it <- (colorRampPalette(brewer.pal(9, "Blues"))(input$preset_it))       
+                            col_it <- (colorRampPalette(brewer.pal(9, "Blues"))(length(visitors$origin)))
+                            col_it <- rev(col_it)
                         }
                         
               
@@ -161,16 +163,17 @@ shinyServer(function(input, output, session) {
                         })
                 
                 output$tot_st <- renderPlotly({
-                        st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
-                        foreigners <- get_tot_foreigners_by_prov(st, input$preset_st)
-                        col_st = colors
-                        if (input$color2 == "red"){
-                                col_st <- (colorRampPalette(brewer.pal(9, "Reds"))(input$preset_st))      
-                        }
-                        
-                        p <- plot_ly(foreigners, labels = ~country, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text', text = ~paste(country, ":", presence), marker = list(colors = col_st, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
-                        layout(title = "Provenienza dei visitatori stranieri in Sardegna", showlegend = T)
-                                     
+                    st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
+                    foreigners <- get_tot_foreigners_by_prov2(st, input$preset_st)
+                    col_st = colors
+                    if (input$color2 == "red"){
+                      col_st <- (colorRampPalette(brewer.pal(9, "Reds"))(length(foreigners$country)))
+                      col_st <- rev(col_st)
+                    }
+                    
+                    p <- plot_ly(foreigners, labels = ~country, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text', text = ~paste(country, ":", presence), marker = list(colors = col_st, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
+                      layout(title = "Provenienza dei visitatori stranieri in Sardegna", showlegend = T)
+                  
                         
                 })
                 
@@ -233,19 +236,68 @@ shinyServer(function(input, output, session) {
                         
                 })
                 
-                output$com_prov <- renderPlotly({
+                output$com_prov_it <- renderPlotly({
                         italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
                         ###here we filter by municipality
-                        filtered_italians <- filter(italians, comune_name == input$com_id)
-                        visitors <- get_tot_visitors_by_prov(filtered_italians, preset = 21)
-
-                        selected_color = c(rainbow(length(visitors[,1])))
-                        p <- plot_ly(data = visitors, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color)) %>%
-                                layout(title = paste("Comune di Destinazione: ", input$com_id),
+                        filtered_italians <- filter(italians, comune_name == input$municipality3 & customer_class == "visitor")
+                        
+                        
+                        # presets <- length(unique(filtered_italians$origin))
+                        
+                        visitors <- get_tot_visitors_by_prov2(filtered_italians, perc = input$thresh2)
+                 
+                        selected_color = rev(colorRampPalette(brewer.pal(9, "Reds"))(length(visitors$origin)))
+                        p <- plot_ly(data = visitors, x = ~origin, y = ~presence, type = 'bar', marker = list(color = selected_color)) %>%
+                                layout(title = paste("Comune di Destinazione: ", input$municipality3),
                                        yaxis = list(tickfont = list(size = 8)), xaxis = list(title = "Regione di provenienza", tickfont = list(size = 8)))
 
 
                 })
+                
+                output$com_prov_st <- renderPlotly({
+                  strangers <- fread("data/Sardegna_presence_Sep15-Sep16_per_comune_Foreigners - version20161118.csv")
+                  filtered_strangers <- filter(strangers, comune_name == input$municipality3)
+                  
+                  foreigners <- get_tot_foreigners_by_prov2(filtered_strangers, perc = input$thresh2)
+                  selected_color = rev(colorRampPalette(brewer.pal(9, "Blues"))(length(foreigners$country)))
+                  p <- plot_ly(data = foreigners, x = ~country, y = ~presence, type = 'bar', marker = list(color = selected_color)) %>%
+                    layout(yaxis = list(tickfont = list(size = 8)), xaxis = list(title = "Nazione di provenienza", tickfont = list(size = 8)))                  
+                  
+                  
+                })
+                
+                output$plot_prov <- renderPlotly({
+                  italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
+                  
+                  provinces = unique(italians$province)
+                  visitor_array = c()
+                  for (i in 1:length(provinces)){
+                    filtered_visitors <- filter(italians, customer_class == 'visitor' & province == provinces[i])
+                    visitor_array[i] <- get_tot_visitors_by_prov2(filtered_visitors, perc = input$prov_th1)
+                    
+                  }
+                  
+                  # selected_color = rev(colorRampPalette(brewer.pal(9, "Greens"))(length(visitors$origin)))
+                  # p <- plot_ly(visitors, labels = ~origin, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
+                  #              text = ~paste(origin, ":", presence), marker = list(colors = col_it, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
+                  #   layout(title = "Provenienza dei visitatori italiani in Sardegna", showlegend = T)
+                  p <- plot_ly()
+                  for (j in 1:length(provinces)){
+                     p %>% add_pie(data = visitor_array[j], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)))
+                  }
+                  
+                  p %>% layout(title = "Pie Charts with Subplots", showlegend = F,
+                               xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                               yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+                  p
+                  
+                  
+                })
+                
+                output$prov_st <- renderPlotly({
+                  
+                })
+                
 })        
 
 
