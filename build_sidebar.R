@@ -4,10 +4,12 @@ build_sidebar <- function(){
     sidebarMenu(id="items",
                 menuItem("home", tabName = "home", icon = icon("home")),
                 menuItem("Turismo", icon = icon("area-chart"),
-                         menuSubItem("Provenienza visitatori", tabName = "provenienze"),
+                         menuSubItem("Regione: provenienze", tabName = "provenienze"),
+                         menuSubItem("Province: provenienze", tabName = "prov_it"),                         
+                         menuSubItem("Comuni: provenienze", tabName = "com_by_prov"),
                          menuSubItem("Provenienza nel periodo", tabName = "provenienze_tmp"),
-                         menuSubItem("Presenza it e st", tabName = "presenze_it"),
-                         menuSubItem("Presenza nei Comuni", tabName = "com_prov")),
+                         menuSubItem("Presenza it e st", tabName = "presenze_it")),
+                         
                          # menuSubItem("Presenza stranieri", tabName = "presenze_st")),
         
                 menuItem("Turismo Interno", icon = icon("bed"),
