@@ -162,10 +162,11 @@ shinyServer(function(input, output, session) {
                 
                 output$tot_st <- renderPlotly({
                         st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
-                        foreigners <- get_tot_foreigners_by_prov(st, input$preset_st)
+                        foreigners <- get_tot_foreigners_by_prov2(st, input$preset_st)
                         col_st = colors
                         if (input$color2 == "red"){
-                                col_st <- (colorRampPalette(brewer.pal(9, "Reds"))(input$preset_st))      
+                                col_st <- (colorRampPalette(brewer.pal(9, "Reds"))(length(foreigners$country)))
+                                col_st <- rev(col_st)
                         }
                         
                         p <- plot_ly(foreigners, labels = ~country, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text', text = ~paste(country, ":", presence), marker = list(colors = col_st, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
@@ -236,12 +237,12 @@ shinyServer(function(input, output, session) {
                 output$com_prov <- renderPlotly({
                         italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
                         ###here we filter by municipality
-                        filtered_italians <- filter(italians, comune_name == input$com_id)
+                        filtered_italians <- filter(italians, comune_name == input$com_prov_id)
                         visitors <- get_tot_visitors_by_prov(filtered_italians, preset = 21)
 
                         selected_color = c(rainbow(length(visitors[,1])))
                         p <- plot_ly(data = visitors, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color)) %>%
-                                layout(title = paste("Comune di Destinazione: ", input$com_id),
+                                layout(title = paste("Comune di Destinazione: ", input$com_prov_id),
                                        yaxis = list(tickfont = list(size = 8)), xaxis = list(title = "Regione di provenienza", tickfont = list(size = 8)))
 
 

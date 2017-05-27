@@ -68,6 +68,19 @@ get_tot_foreigners_by_prov <- function(dataset, preset = 9){
         res
 }
 
+get_tot_foreigners_by_prov2 <- function(dataset, perc = 1.0){
+        x <- aggregate(data = dataset, presence_foreigners ~ country, FUN = sum)
+        names(x) <- c("country", "presence")
+        x$perc <- round(100*(x$presence / sum(x$presence)), 2)
+        x[x$perc < perc, 1] = "Others"
+        res <- aggregate(data = x, presence ~ country, FUN = sum)
+        names(res) <- c("country", "presence")
+        countries <- as.character(res$country)
+        country <- factor(countries, levels = countries)
+        res$country = country
+        res
+}
+
 
 
 

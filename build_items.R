@@ -1,10 +1,13 @@
 library(ggplot2)
+library(plotly)
+library(data.table)
 source("R/destination_by_municipalities.R")
 source("R/destination_by_provinces.R")
 source("R/covisit_tabs.R")
 
 dataset <- read.csv("data/sardegna_destinations_for_municipalities.csv")
 provinces <- read.csv("data/sardegna_destinations_for_provinces.csv")
+municipalities <- read.csv("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
 presenze_ita_prov <- read.csv("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv") 
 
 build_items <- function(){
@@ -47,7 +50,7 @@ tabItems(
                                                 tags$fieldset(
                                                         tags$legend('Diagram 2', class = 'fieldlegend'),       
                                                         class = "fieldgroup",        
-                                                        sliderInput("preset_st", "Nazioni visualizzate", min=2, max= 107, value = 10, step = 1),
+                                                        sliderInput("preset_st", "Nazioni visualizzate", min=0, max= 5, value = 2.5, step = 0.5),
                                                         radioButtons("color2", "Visualizzazione pie chart 2:",
                                                                      c("Palette" = "palette", "Red scale" = "red"), selected = 'red')                                                        
                                                              )
@@ -238,8 +241,30 @@ tabItems(
                         )
                 ),
                 create_tab("cov_tot", "h_cov_tot", "h_cov_res", "origins1"),
-                create_tab("cov_vis", "h_cov_it", "h_cov_st", "origins2"),
-                create_tab_bar(tabname = "com_prov", label = "Comune di destinazione: ", plot_id1 = "plot_com_prov",input_id1 = "com_id")
+                create_tab("cov_vis", "h_cov_it", "h_cov_st", "origins2")
+                # tabItem(
+                #           tabName = "com_prov",
+                #           fluidPage(
+                #                   fluidRow(
+                #                           column(
+                #                                   width = 3,
+                #                                   wellPanel(
+                #                                           tags$fieldset(
+                #                                                   selectInput("com_prov_id", "Comune di destinazione", choices = "" )
+                #                                           )
+                #                                   )
+                #                           ),
+                #                           column(
+                #                                   width = 8,
+                #                                   plotlyOutput("plot_com_prov")
+                #                           )
+                #                   )
+                #           )
+                # )
+  
+                
+                #create_tab_bar(tabname = "com_prov", label = "Comune di destinazione: ", plot_id1 = "plot_com_prov",input_id1 = "com_id")
+                
                 
              
         )
