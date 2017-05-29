@@ -275,23 +275,21 @@ tabItems(
     tabName = "prov_it",
     fluidPage(
       fluidRow(
-        column(
-          width = 8, offset = 2, 
-          wellPanel(
-            tags$fieldset(
-              tags$legend('Diagram 1', class = 'fieldlegend'),       
-              class = "fieldgroup",
-              selectInput(inputId = "cat_prov", label = "Categoria", choices = c("Visitatori italiani", "Visitatori stranieri"), selected = "Visitatori italiani"),
-              sliderInput("prov_it1", "Regioni visualizzate", min=0, max= 5, value = 2.5, step = 0.5),
-              radioButtons("color1", "Visualizzazione pie chart 1:",
-                           c("Palette" = "palette", "Blue scale" = "blue"), selected = 'blue')                                                        
-              
-              ))
-        ),
-        column(id="all_provinces",
-          width = 12,
-          plotlyOutput("plot_prov")
-        )
+           column(id="all_provinces",
+                  width = 12,
+                  plotlyOutput("plot_prov")
+                  ),br(), br(), br(),
+      fluidRow(     
+           column(
+             width = 10, offset = 1, 
+             wellPanel(id="prov_well",
+               tags$fieldset(
+                 class = "fieldgroup",
+                 selectInput(inputId = "cat_prov", label = "Categoria", choices = c("Visitatori italiani", "Visitatori stranieri"), selected = "Visitatori italiani"),
+                 sliderInput("prov_it1", "Regioni visualizzate", min=0, max= 5, value = 2.5, step = 0.5)
+               )))
+          )
+           
       )))
   
   
