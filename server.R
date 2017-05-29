@@ -269,47 +269,75 @@ shinyServer(function(input, output, session) {
                 })
                 
                 output$plot_prov <- renderPlotly({
-                  italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
-                  
+
+                 
+                  italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")              
                   provinces = unique(italians$province)
                   visitors_list = list()
-                  for (i in 1:length(provinces)){
-                        filtered_visitors <- filter(italians, customer_class == 'visitor' & province == provinces[i])
-                        visitors_list[[i]] <- get_tot_visitors_by_prov2(filtered_visitors, perc = input$prov_it1)
-                  # 
-                   }
-                 # visitors_list[[1]] <- get_tot_visitors_by_prov2(filtered_visitors, perc = input$)
+                  origin_list = list()
                   
-                  # selected_color = rev(colorRampPalette(brewer.pal(9, "Greens"))(length(visitors$origin)))
-                  # p <- plot_ly(visitors, labels = ~origin, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
-                  #              text = ~paste(origin, ":", presence), marker = list(colors = col_it, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
-                  #   layout(title = "Provenienza dei visitatori italiani in Sardegna", showlegend = T)
-                  p <- plot_ly() %>%
-                  add_pie(data = visitors_list[[1]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0, 0.25), y = c(0.55, 1))) %>%
-                  add_pie(data = visitors_list[[2]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.25, 0.50), y = c(0.55, 1))) %>%
-                  add_pie(data = visitors_list[[3]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.50, 0.75), y = c(0.55, 1))) %>%
-                  add_pie(data = visitors_list[[4]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.75, 1), y = c(0.55, 1))) %>%
-                  add_pie(data = visitors_list[[5]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0, 0.25), y = c(0, 0.45))) %>%
-                  add_pie(data = visitors_list[[6]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.25, 0.50), y = c(0, 0.45))) %>%
-                  add_pie(data = visitors_list[[7]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.50, 0.75), y = c(0, 0.45))) %>%
-                  add_pie(data = visitors_list[[8]], labels = ~origin, values = ~presence, textinfo = 'percent', hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.75, 1), y = c(0, 0.45))) %>%                 
+                  
+                  
+                  if (input$cat_prov == "Visitatori italiani"){
+                    for (i in 1:length(provinces)){
+    
+                      filtered_visitors <- filter(italians, customer_class == 'visitor' & province == provinces[i])
+                      visitors_list[[i]] <- get_tot_visitors_by_prov2(filtered_visitors, perc = input$prov_it1)
+                      origin_list[[i]] <- visitors_list[[i]]["origin"]
+                      print(origin_list[[i]])
+                      # selected_colors[[i]] <- (colorRampPalette(brewer.pal(9, "Reds"))(length(visitors_list[[i]]$origin))) 
+                    }
+                    
+                  }else if (input$cat_prov == "Visitatori stranieri"){
+                    for (i in 1:length(provinces)){
+                      foreigners <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
+                      filtered_foreigners <- filter(foreigners, province == provinces[i])
+                      visitors_list[[i]] <- get_tot_foreigners_by_prov2(filtered_foreigners, perc = input$prov_it1)
+                      # selected_colors[[i]] <- (colorRampPalette(brewer.pal(9, "Reds"))(length(visitors_list[[i]]$country))) 
+                    }
+                    
+                  }
+         
+                  indipent_var = NULL
+                  title = NULL
+                  selected_colors <- NULL
+                  
+                  if(input$cat_prov == "Visitatori italiani"){
+                    independent_var = ~origin
+                    title = "Provenienza dei visitatori italiani per provincia"
+                    selected_colors = (colorRampPalette(brewer.pal(9, "RdPu"))(20))
+                    #selected_colors <- (colorRampPalette(brewer.pal(9, "Reds"))(length(visitors_list[[1]]$origin)))
+                    
+                  }else{
+                    independent_var = ~country
+                    title = "Provenienza dei visitatori stranieri per provincia"
+                    selected_colors = NULL
+                    #selected_colors <- (colorRampPalette(brewer.pal(9, "Blues"))(length(visitors_list[[1]]$country)))
+                  }
+                  p <- plot_ly(marker = list(colors = selected_colors)) %>%
+                  add_pie(data = visitors_list[[1]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[1]][,1]), hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0, 0.25), y = c(0.55, 1))) %>%
+                  add_pie(data = visitors_list[[2]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[2]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.25, 0.50), y = c(0.55, 1))) %>%
+                  add_pie(data = visitors_list[[3]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[3]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.50, 0.75), y = c(0.55, 1))) %>%
+                  add_pie(data = visitors_list[[4]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[4]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.75, 1), y = c(0.55, 1))) %>%
+                  add_pie(data = visitors_list[[5]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[5]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0, 0.25), y = c(0, 0.45))) %>%
+                  add_pie(data = visitors_list[[6]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[6]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.25, 0.50), y = c(0, 0.45))) %>%
+                  add_pie(data = visitors_list[[7]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[7]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.50, 0.75), y = c(0, 0.45))) %>%
+                  add_pie(data = visitors_list[[8]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[8]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.75, 1), y = c(0, 0.45))) %>%                 
                           
                                    
-                  layout(title = "Provenienza dei visitatori italiani nelle per provincia", height = 580, annotations = list(
-                                  list(x = 0.12 , y = 1.05, text = provinces[1], showarrow = F, xref='paper', yref='paper'),
+                  layout(title = title, height = 580, annotations = list(
+                                  list(x = 0.10 , y = 1.05, text = provinces[1], showarrow = F, xref='paper', yref='paper'),
                                   list(x = 0.37 , y = 1.05, text = provinces[2], showarrow = F, xref='paper', yref='paper'),
                                   list(x = 0.62 , y = 1.05, text = provinces[3], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.87 , y = 1.05, text = provinces[4], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.12 , y = 0.5, text = provinces[5], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.37 , y = 0.5, text = provinces[6], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.62 , y = 0.5, text = provinces[7], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.87 , y = 0.5, text = provinces[8], showarrow = F, xref='paper', yref='paper')                                  
+                                  list(x = 0.90 , y = 1.05, text = provinces[4], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.10 , y = 0.48, text = provinces[5], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.37 , y = 0.48, text = provinces[6], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.62 , y = 0.48, text = provinces[7], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.90 , y = 0.48, text = provinces[8], showarrow = F, xref='paper', yref='paper')                                  
                                   )
                    )         
 
-                  
-                         # layout(title = "Pie Charts with Subplots", showlegend = F, xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-                         # yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+ 
                   p
                   
                 })
