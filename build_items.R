@@ -276,7 +276,7 @@ tabItems(
     fluidPage(
       fluidRow(
         column(
-          width = 4,
+          width = 8, offset = 2, 
           wellPanel(
             tags$fieldset(
               tags$legend('Diagram 1', class = 'fieldlegend'),       
@@ -288,8 +288,8 @@ tabItems(
               
               ))
         ),
-        column(
-          width = 7,
+        column(id="all_provinces",
+          width = 12,
           plotlyOutput("plot_prov")
         )
       )))
