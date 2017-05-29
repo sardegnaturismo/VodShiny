@@ -24,6 +24,10 @@
         margin-top: 15px;
 }
 
+#plot_prov{
+        height: 700px;
+}
+
 .main-sidebar{
         width: 200px;
 }
