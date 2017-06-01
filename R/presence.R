@@ -64,6 +64,7 @@ get_tot_visitors_by_prov2 <- function(dataset, perc = 1.0){
       res <- aggregate(data = x, presence ~ origin, FUN = sum)
       names(res) <- c("origin", "presence")
       regions <- as.character(res$origin)
+      regions[which(regions == 'italian_visitor')] = "Others"
       origin <- factor(regions, levels = regions)
       res$origin = origin
       res <- res[order(res$presence, decreasing = T), ]
