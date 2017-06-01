@@ -7,3 +7,7 @@ filter_municipalities <- function(municipalities){
         filtered_municipalities
         
 }
+
+name_adapter <- function(ref_list, list_to_change){
+      
+}
