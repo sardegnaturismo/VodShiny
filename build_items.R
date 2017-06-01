@@ -36,7 +36,7 @@ tabItems(
                 fluidPage(
                         fluidRow(
                                 column(
-                                        width = 4,
+                                        width = 2,
                                         wellPanel(
                                                 tags$fieldset(
                                                      tags$legend('Diagram 1', class = 'fieldlegend'),       
@@ -61,11 +61,11 @@ tabItems(
                                                 )
                                        ),
                                 column(
-                                        width = 7,
+                                        width = 10,
                                         plotlyOutput("tot_it")
                                       ),
                                 column(
-                                        width = 7,
+                                        width = 10,
                                         plotlyOutput("tot_st")
                                 )
                                 

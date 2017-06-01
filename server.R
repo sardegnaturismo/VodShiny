@@ -10,6 +10,7 @@ source("R/destination_by_provinces.R")
 source("R/presence.R")
 source("R/covisit.R")
 source("R/utilities.R")
+source("R/sired.R")
 
 
 
@@ -140,8 +141,10 @@ shinyServer(function(input, output, session) {
                 
                 output$tot_it <-renderPlotly({
                         it <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
+                        it_sired <- fread("data/sired_provenienze_italiani.csv")
                         # st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
                         visitors <- get_tot_visitors_by_prov2(it, input$preset_it)
+                        sired_visitors <- get_sired_visitors_it(it_sired, input$preset_it)
                         # foreigners <- get_tot_foreigners_by_prov(st)
                         col_it = colors
                         if (input$color1 == "blue"){
@@ -149,11 +152,21 @@ shinyServer(function(input, output, session) {
                             col_it <- rev(col_it)
                         }
                         
-              
-                        p <- plot_ly(visitors, labels = ~origin, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
-                                     text = ~paste(origin, ":", presence), marker = list(colors = col_it, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
-                             layout(title = "Provenienza dei visitatori italiani in Sardegna", showlegend = T)
-
+                        # #### single plot ###              
+                        # p <- plot_ly(visitors, labels = ~origin, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
+                        #              text = ~paste(origin, ":", presence), marker = list(colors = col_it, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
+                        #      layout(title = "Provenienza dei visitatori italiani in Sardegna", showlegend = T)
+                        ####################
+                        #### multiple plot ####
+                        p <- plot_ly() %>%
+                          add_pie(data = visitors, labels = ~origin, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", origin), hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 1))) %>%
+                          add_pie(data = sired_visitors, labels = ~regions, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", regions), hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF')), domain = list(x = c(0.5, 1), y = c(0, 1))) %>%
+                          layout(title =  "Provenienza dei visitatori italiani in Sardegna", annotations = list(
+                            list(x = 0.20 , y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
+                            list(x = 0.80 , y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))
+                        #############    
+                        p    
+                        
                         
                         # p <- plot_ly(foreigners, labels = ~country, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
                         #              text = ~paste(country, ":", presence), marker = list(colors = colors, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
@@ -165,15 +178,28 @@ shinyServer(function(input, output, session) {
                 output$tot_st <- renderPlotly({
 
                     st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
+                    sired_st <- fread("data/sired_provenienze_stranieri.csv")
+                    
                     foreigners <- get_tot_foreigners_by_prov2(st, input$preset_st)
+                    sired_foreigners <- get_sired_visitors_st(sired_st, input$preset_st)
+                    
                     col_st = colors
                     if (input$color2 == "red"){
                       col_st <- (colorRampPalette(brewer.pal(9, "Reds"))(length(foreigners$country)))
                       col_st <- rev(col_st)
                     }
+                 ###single plot ###   
+                    # p <- plot_ly(foreigners, labels = ~country, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text', text = ~paste(country, ":", presence), marker = list(colors = col_st, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
+                    #   layout(title = "Provenienza dei visitatori stranieri in Sardegna", showlegend = T)
+                #####################
+                    p <- plot_ly() %>%
+                      add_pie(data = foreigners, labels = ~country, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", country), hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 1))) %>%
+                      add_pie(data = sired_foreigners, labels = ~nations, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", nations), hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF')), domain = list(x = c(0.5, 1), y = c(0, 1))) %>%
+                      layout(title =  "Provenienza dei visitatori stranieri in Sardegna", annotations = list(
+                        list(x = 0.20 , y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
+                        list(x = 0.80 , y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))                    
                     
-                    p <- plot_ly(foreigners, labels = ~country, values = ~presence, type = 'pie', textinfo = 'percent', hoverinfo = 'text', text = ~paste(country, ":", presence), marker = list(colors = col_st, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
-                      layout(title = "Provenienza dei visitatori stranieri in Sardegna", showlegend = T)
+                    
 
                         
                 })
