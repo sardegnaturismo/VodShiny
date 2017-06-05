@@ -39,22 +39,22 @@ tabItems(
                                         width = 2,
                                         wellPanel(
                                                 tags$fieldset(
-                                                     tags$legend('Diagram 1', class = 'fieldlegend'),       
+                                                     tags$legend('Visitatori italiani', class = 'fieldlegend'),       
                                                      class = "fieldgroup",        
-                                                     sliderInput("preset_it", "Regioni visualizzate", min=0, max= 5, value = 2.5, step = 0.5),
+                                                     sliderInput("preset_it", "Regioni visualizzate", min=1, max= 5, value = 2, step = 0.5),
                                                      radioButtons("color1", "Visualizzazione pie chart 1:",
-                                                                     c("Palette" = "palette", "Blue scale" = "blue"), selected = 'blue')                                                        
+                                                                     c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                         
                                                 ),
                                                 br(),
                                                 br(),
                                                 tags$fieldset(
 
-                                                    tags$legend('Diagram 2', class = 'fieldlegend'),       
+                                                    tags$legend('Visitatori stranieri', class = 'fieldlegend'),       
                                                     class = "fieldgroup",        
-                                                    sliderInput("preset_st", "Nazioni visualizzate", min=0, max= 5, value = 2.5, step = 0.5),
+                                                    sliderInput("preset_st", "Nazioni visualizzate", min=1, max= 5, value = 1, step = 0.5),
                                                     radioButtons("color2", "Visualizzazione pie chart 2:",
-                                                               c("Palette" = "palette", "Red scale" = "red"), selected = 'red')                                                        
+                                                               c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                 )
                                                 
 
@@ -71,26 +71,6 @@ tabItems(
                                 
                                                   
                         ),
-                        # ,br(),
-                        # fluidRow(
-                        #         column(width = 4),
-                        #         column(
-                        #                 width = 7,
-                        #                 plotlyOutput("tot_st")
-                        #         )                 
-                        # ),
-                        
-                        # fluidRow(
-                        #         column(
-                        #                 width = 4,
-                        #                 wellPanel(
-                        #                         sliderInput("preset_st", "Provenienze visualizzate", min=2, max= 20, value = 8, step = 1),
-                        #                         radioButtons("color", "Visualizzazione diagramma:",
-                        #                                      c("Colore" = "colore", "Scala di grigio" = "grigio"), selected = 'colore')                                                
-                        #                         )
-                        #                 ),
-                        #     
-                        #           ),
                         
                         br(),
                         br()
@@ -136,46 +116,57 @@ tabItems(
         ),
   
         tabItem(
-                tabName = "presenze_it",
+                tabName = "presenze_regione",
                 fluidPage(
                         fluidRow(
-                                column(
-                                        width = 8, offset = 2,
-                                        plotlyOutput("residents")
-                                ),br(),br(),
-                                column(
-                                        width = 8, offset = 2,
-                                        wellPanel(id = "res_panel",
-                                                tags$fieldset(
-                                                        tags$legend('Residenti', class = 'fieldlegend'),
-                                                        radioButtons(inputId = "res_control", label = "Colore: ", choices = c(Blue = "blue", Green = "darkgreen"),
-                                                                     selected = "blue" )
-                
-                                                              )
-                                                 )
-                                ),br(),br(),br(),                                
+                                # column(
+                                #         width = 8, offset = 2,
+                                #         plotlyOutput("residents")
+                                # ),br(),br(),
+                                # column(
+                                #         width = 8, offset = 2,
+                                #         wellPanel(id = "res_panel",
+                                #                 tags$fieldset(
+                                #                         tags$legend('Residenti', class = 'fieldlegend'),
+                                #                         radioButtons(inputId = "res_control", label = "Colore: ", choices = c(Blue = "blue", Green = "darkgreen"),
+                                #                                      selected = "blue" )
+                                # 
+                                #                               )
+                                #                  )
+                                # ),br(),br(),br(),                                
                                 
+                                # column(width = 2,
+                                #        wellPanel(
+                                #                id = "vis_panel",
+                                #                tags$fieldset(
+                                #                        tags$legend('Visitatori', class = 'fieldlegend'), 
+                                #                        checkboxGroupInput("vis_control",
+                                #                                           "Presenze: ",
+                                #                                           choices = c("Dati Vodafone", "Dati Sired", "Visitatori Italiani", "Visitatori Stranieri"),
+                                #                                           selected = c("Dati Vodafone", "Dati Sired", "Visitatori Italiani", "Visitatori Stranieri")
+                                #        )))),
                                 column(
-                                        width = 8, offset = 2,
+                                        width = 10, offset = 1,
                                         plotlyOutput("visitors")
-                                ),br(),br(),br(),
+                                )),br(),br(),
+                          fluidRow(      
                                 column(
-                                        width = 8, offset = 2,
+                                        width = 4, offset = 1,
                                         wellPanel(
                                                 id = "vis_panel",
                                                 tags$fieldset(
-                                                        tags$legend('Visitatori', class = 'fieldlegend'), 
+                                                        tags$legend('Visitatori', class = 'fieldlegend'),
                                                         checkboxGroupInput("vis_control",
                                                                            "Presenze: ",
-                                                                           choices = c("Visitatori Italiani", "Visitatori Stranieri"),
-                                                                           selected = "Visitatori Italiani"
-                                                        )
-                                                        
-                                                )
-                                        )                                        
-                                )                                
+                                                                           choices = c("Dati Vodafone", "Dati Sired", "Visitatori Italiani", "Visitatori Stranieri"),
+                                                                           selected = c("Dati Vodafone", "Dati Sired", "Visitatori Italiani", "Visitatori Stranieri")
+                                                                           )
+                                                               )
+                                                  )
+                                        )
+                                    )
                                 
-                        )
+                                
                 )
         ),
   
@@ -251,14 +242,14 @@ tabItems(
                   fluidPage(
                     fluidRow(
                         column(
-                          width = 4, offset = 4,
+                          width = 2, 
                           wellPanel(
                             selectInput("municipality3", "Comune:", choices = unique(sort(comuni[["comune_name"]]))),
-                            sliderInput("thresh2", "Percentage threshold:", min = 0, max = 5, value = 2.5, step = 0.5)                
+                            sliderInput("thresh2", "Percentage threshold:", min = 1, max = 5, value = 2.5, step = 0.5)                
                           )                    
                         ),
                         column(
-                          width = 8, offset = 2,
+                          width = 8,
                           plotlyOutput("com_prov_it")
                         ),br(), br(), br(),
                         column(
@@ -278,15 +269,15 @@ tabItems(
            column(id="all_provinces",
                   width = 12,
                   plotlyOutput("plot_prov")
-                  ),br(), br(), br(),
+                  ),br(), br(), br(),br(), br(),
       fluidRow(     
            column(
-             width = 10, offset = 1, 
+             width = 9, offset = 1, 
              wellPanel(id="prov_well",
                tags$fieldset(
                  class = "fieldgroup",
                  selectInput(inputId = "cat_prov", label = "Categoria", choices = c("Visitatori italiani", "Visitatori stranieri"), selected = "Visitatori italiani"),
-                 sliderInput("prov_it1", "Regioni visualizzate", min=0, max= 5, value = 2.5, step = 0.5)
+                 sliderInput("prov_it1", "Regioni visualizzate", min=1, max= 5, value = 2.5, step = 0.5)
                )))
           )
            
