@@ -3,6 +3,7 @@ require(plotly)
 source("R/destination_by_municipalities.R")
 source("R/destination_by_provinces.R")
 source("R/covisit_tabs.R")
+source("R/province_tab.R")
 
 dataset <- read.csv("data/sardegna_destinations_for_municipalities.csv")
 
@@ -70,50 +71,11 @@ tabItems(
                                 )
                                 
                                                   
-                        ),
-                        
-                        br(),
-                        br()
-           
-                        # 
-                        # fluidRow(
-                        #         column(
-                        #               width = 4,
-                        #               wellPanel(
-                        #                       checkboxGroupInput(
-                        #                               "pres_control",
-                        #                               "Presenze: ",
-                        #                               choices = c("Residenti in Sardegna", "Massimo", "Minimo"),
-                        #                               selected = "Residenti in Sardegna"
-                        #                       )
-                        #               )
-                        #               
-                        #         ),
-                        #         column(
-                        #                 width = 7
-                        #                 plotlyOutput("residents")
-                        #         )
-                        #         
-                        # ),
-                        # fluidRow(
-                        #         column(
-                        #                 width = 4,
-                        #                 wellPanel(
-                        #                         checkboxGroupInput(
-                        #                                 "vis_control",
-                        #                                 "Presenze: ",
-                        #                                 choices = c("Visitatori Italiani", "Visitatori Stranieri"),
-                        #                                 selected = "Visitatori Italiani"
-                        #                                 )
-                        #                         )
-                        #                 ),
-                        #         column(
-                        #                 width = 7,
-                        #                 plotlyOutput("visitors")
-                        #               )
-                        #         )
-                )
-        ),
+                        )
+        )),
+        
+        
+                
   
         tabItem(
                 tabName = "presenze_regione",
@@ -169,7 +131,7 @@ tabItems(
                                 
                 )
         ),
-  
+        create_province_tab("Cagliari", "ca_it", "ca_st"),
         tabItem(
                 tabName = "prov_interno",
                 fluidPage(

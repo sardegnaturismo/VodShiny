@@ -9,7 +9,14 @@ build_sidebar <- function(){
                                         menuSubItem("Presenze giornaliere", tabName = "presenze_regione")
                                      ),                                     
                          menuItem("Province", 
-                                        menuSubItem("Provenienza visitatori", tabName = "prov_it")),                         
+                                        menuSubItem("Provenienza visitatori", tabName = "prov_it"),
+                                        menuSubItem("Cagliari", tabName = 'ca'),
+                                        menuSubItem("Carbonia-Iglesias", tabName = 'ci'), 
+                                        menuSubItem("Nuoro", tabName = 'nu'),                
+                                        menuSubItem("Ogliastra", tabName = 'og'),                                  
+                                        menuSubItem("Olbia-Tempio", tabName = 'ot'),
+                                        menuSubItem("Sassari", tabName = 'ss'),
+                                        menuSubItem("Medio Campidano", tabName = 'vs')),
                          menuItem("Comuni", 
                                         menuSubItem("Provenienza visitatori", tabName = "com_by_prov"))
                          ),
