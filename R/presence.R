@@ -127,5 +127,26 @@ get_italian_visitors_by_province <- function(dataset, province_name, perc = 0){
         
 }
 
+## Provenienza dei visitatori stanieri per provincia
+get_foreign_visitors_by_province <- function(dataset, province_name, perc = 0){
+  foreigners <- filter(dataset, province == province_name)
+  
+  x <- aggregate(data = foreigners, presence_foreigners ~ country, FUN = sum)
+  x[x$country == "foreigners", 1] = "Others"
+  names(x) <- c("country", "presence")
+  x$perc <- round(100*(x$presence / sum(x$presence)), 2)
+  x[x$perc < perc, 1] = "Others"
+  res <- aggregate(data = x, presence ~ country, FUN = sum)
+  names(res) <- c("country", "presence")
+  countries <- as.character(res$country)
+  country <- factor(countries, levels = countries)
+  res$country = country
+  res <- res[order(res$presence, decreasing = T), ]
+  
+  res
+  
+  
+}
+
 
 

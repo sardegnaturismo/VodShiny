@@ -87,10 +87,25 @@ get_sired_italian_visitors_by_province <- function(dataset, province_name, perc 
         res <- aggregate(data = res, presence ~ regions, FUN = sum)
         res <- res[order(res$presence, decreasing = T), ]
 
-                
-
-        
         
 }
 
+### Provenienza visitatori stranieri per provincia
+
+get_sired_foreign_visitors_by_province <- function(dataset, province_name, perc = 0){
+  strangers <- dataset[which(dataset[["Provincia"]] == province_symbols[[province_name]]), 2:ncol(dataset)]
+  nations <- names(strangers)
+  nations <- name_adapter(nations, reg = F)
+  presence <- as.numeric(strangers)
+  
+  res <- data.frame(nations, presence)
+  res$nations <- as.character(res$nations)
+  res$perc <- round(100*(res$presence / sum(res$presence)), 2)
+  res[res$perc < perc, 1] = "Others"
+  res <- aggregate(data = res, presence ~ nations, FUN = sum)
+  res <- res[order(res$presence, decreasing = T), ]
+  res
+  
+  
+}  
 
