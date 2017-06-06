@@ -1,4 +1,6 @@
 source("R/constants.R")
+require(ggplot2)
+
 create_province_tab <- function(province, it_diagram, st_diagram){
   province_symbol = tolower(province_symbols[[province]])
   
@@ -7,19 +9,29 @@ create_province_tab <- function(province, it_diagram, st_diagram){
   radio_button_id1 <- paste("color_", province_symbol, "_1", sep = '')
   radio_button_id2 <- paste("color_", province_symbol, "_2", sep = '')
   
-  print(slider_id1)
-  print(slider_id2)
-  print(radio_button_id1)
-  print(radio_button_id2)
+  # print(slider_id1)
+  # print(slider_id2)
+  # print(radio_button_id1)
+  # print(radio_button_id2)
   
    
   
   tab <- tabItem(
     tabName = province_symbol,
+   
     fluidPage(
+      h2(id= "province_title", province),
       fluidRow(
         column(
           width = 2,
+          wellPanel(
+            tags$fieldset(
+              tags$legend('Fonte', class = 'fieldlegend'),
+              class = "fieldgroup",
+              radioButtons("aaaa", "Fonte: ", c("All" = "all", "Vodafone" = "vodafone", "Sired" = "sired"))
+            )
+          ),
+
           wellPanel(
             tags$fieldset(
               tags$legend('Visitatori italiani', class = 'fieldlegend'),       
@@ -42,6 +54,13 @@ create_province_tab <- function(province, it_diagram, st_diagram){
             
             
           )
+        ),
+        
+        column(
+          width = 3,
+          plotlyOutput("abcd")
+         
+          
         ),
         column(
           width = 10,
