@@ -11,6 +11,7 @@ source("R/presence.R")
 source("R/covisit.R")
 source("R/utilities.R")
 source("R/sired.R")
+source("R/outputs.R")
 
 
 
@@ -469,49 +470,73 @@ shinyServer(function(input, output, session) {
                   
                 })
                 
-                output$ca_it <- renderPlotly({
-                  it <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
-                  it_sired <- fread("data/sired_provenienze_italiani.csv")
-                  
-                  visitors <- get_italian_visitors_by_province(it, "Cagliari", input$preset_ca_it)
-                  sired_visitors <- get_sired_italian_visitors_by_province(it_sired, "Cagliari", input$preset_ca_it)
-                  # foreigners <- get_tot_foreigners_by_prov(st)
-                  col_it = colors
-                  if (input[["color_ca_1"]] == "diverging"){
-                    col_it <- (colorRampPalette(brewer.pal(11, "Spectral"))(length(visitors$origin)))
-                    col_it <- rev(col_it)
-                  }
-                  p <- plot_ly() %>%
-                    add_pie(data = visitors, labels = ~origin, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", origin), hoverinfo = 'text', marker = list(colors = col_it, line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 1))) %>%
-                    add_pie(data = sired_visitors, labels = ~regions, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", regions), hoverinfo = 'text', marker = list(colors = col_it, line = list(color = '#FFFFFF')), domain = list(x = c(0.5, 1), y = c(0, 1))) %>%
-                    layout(title =  "Provenienza dei visitatori italiani nella Provincia di Cagliari", annotations = list(
-                      list(x = 0.20 , y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
-                      list(x = 0.80 , y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))
-                  p    
-                  
-                })
+                output$ca_it <- render_province_it("Cagliari", input)
+                output$ca_st <- render_province_st("Cagliari", input)
                 
-                output$ca_st <- renderPlotly({
-                  st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
-                  st_sired <- fread("data/sired_provenienze_stranieri.csv")
-                  
-                  foreigners <- get_foreign_visitors_by_province(st, "Cagliari", input$preset_ca_st)
-                  
-                  sired_foreigners <- get_sired_foreign_visitors_by_province(st_sired, "Cagliari", input$preset_ca_st)
-                  # foreigners <- get_tot_foreigners_by_prov(st)
-                  col_st = colors
-                  if (input[["color_ca_2"]] == "diverging"){
-                    col_st <- (colorRampPalette(brewer.pal(8, "Accent"))(length(foreigners$country)))
-                    }
-                  p <- plot_ly() %>%
-                    add_pie(data = foreigners, labels = ~country, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", country), hoverinfo = 'text', marker = list(colors = col_st, line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 1))) %>%
-                    add_pie(data = sired_foreigners, labels = ~nations, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", nations), hoverinfo = 'text', domain = list(x = c(0.5, 1), y = c(0, 1))) %>%
-                    layout(title =  "Provenienza dei visitatori italiani nella Provincia di Cagliari", annotations = list(
-                      list(x = 0.20 , y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
-                      list(x = 0.80 , y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))
-                  p    
-                  
-                })                
+                output$or_it <- render_province_it("Oristano", input)
+                output$or_st <- render_province_st("Oristano", input)
+                
+                output$nu_it <- render_province_it("Nuoro", input)
+                output$nu_st <- render_province_st("Nuoro", input)
+                
+                output$ci_it <- render_province_it("Carbonia-Iglesias", input)
+                output$ci_st <- render_province_st("Carbonia-Iglesias", input)
+                
+                output$og_it <- render_province_it("Ogliastra", input)
+                output$og_st <- render_province_st("Ogliastra", input)
+                
+                output$ot_it <- render_province_it("Olbia-Tempio", input)
+                output$ot_st <- render_province_st("Olbia-Tempio", input)
+                
+                output$ss_it <- render_province_it("Sassari", input)
+                output$ss_st <- render_province_st("Sassari", input)
+                
+                output$vs_it <- render_province_it("Medio Campidano", input)
+                output$vs_st <- render_province_st("Medio Campidano", input)
+                
+                # output$ca_it <- renderPlotly({
+                #   it <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
+                #   it_sired <- fread("data/sired_provenienze_italiani.csv")
+                #   
+                #   visitors <- get_italian_visitors_by_province(it, "Cagliari", input$preset_ca_it)
+                #   sired_visitors <- get_sired_italian_visitors_by_province(it_sired, "Cagliari", input$preset_ca_it)
+                #   # foreigners <- get_tot_foreigners_by_prov(st)
+                #   col_it = colors
+                #   if (input[["color_ca_1"]] == "diverging"){
+                #     col_it <- (colorRampPalette(brewer.pal(11, "Spectral"))(length(visitors$origin)))
+                #     col_it <- rev(col_it)
+                #   }
+                #   p <- plot_ly() %>%
+                #     add_pie(data = visitors, labels = ~origin, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", origin), hoverinfo = 'text', marker = list(colors = col_it, line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 1))) %>%
+                #     add_pie(data = sired_visitors, labels = ~regions, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", regions), hoverinfo = 'text', marker = list(colors = col_it, line = list(color = '#FFFFFF')), domain = list(x = c(0.5, 1), y = c(0, 1))) %>%
+                #     layout(title =  "Provenienza dei visitatori italiani nella Provincia di Cagliari", annotations = list(
+                #       list(x = 0.20 , y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
+                #       list(x = 0.80 , y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))
+                #   p    
+                #   
+                # })
+                
+                # output$ca_st <- renderPlotly({
+                #   st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
+                #   st_sired <- fread("data/sired_provenienze_stranieri.csv")
+                #   
+                #   foreigners <- get_foreign_visitors_by_province(st, "Cagliari", input$preset_ca_st)
+                #   
+                #   sired_foreigners <- get_sired_foreign_visitors_by_province(st_sired, "Cagliari", input$preset_ca_st)
+                #   # foreigners <- get_tot_foreigners_by_prov(st)
+                #   col_st = colors
+                #   if (input[["color_ca_2"]] == "diverging"){
+                #     col_st <- (colorRampPalette(brewer.pal(8, "Accent"))(length(foreigners$country)))
+                #     }
+                #   p <- plot_ly() %>%
+                #     add_pie(data = foreigners, labels = ~country, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", country), hoverinfo = 'text', marker = list(colors = col_st, line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 1))) %>%
+                #     add_pie(data = sired_foreigners, labels = ~nations, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", nations), hoverinfo = 'text', domain = list(x = c(0.5, 1), y = c(0, 1))) %>%
+                #     layout(title =  "Provenienza dei visitatori italiani nella Provincia di Cagliari", annotations = list(
+                #       list(x = 0.20 , y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
+                #       list(x = 0.80 , y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))
+                #   p    
+                #   
+                # })                
                 
 })        
 

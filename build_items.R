@@ -132,6 +132,13 @@ tabItems(
                 )
         ),
         create_province_tab("Cagliari", "ca_it", "ca_st"),
+        create_province_tab("Oristano", "or_it", "or_st"),
+        create_province_tab("Nuoro", "nu_it", "nu_st"),
+        create_province_tab("Ogliastra", "og_it", "og_st"),
+        create_province_tab("Olbia-Tempio", "ot_it", "ot_st"),
+        create_province_tab("Carbonia-Iglesias", "ci_it", "ci_st"),
+        create_province_tab("Sassari", "ss_it", "ss_st"),
+        create_province_tab("Medio Campidano", "vs_it", "vs_st"),
         tabItem(
                 tabName = "prov_interno",
                 fluidPage(
