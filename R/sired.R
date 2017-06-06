@@ -66,6 +66,21 @@ get_sired_daily_all_st <- function(dataset){
         res        
 }
 
+get_sired_daily_by_prov_it <- function(dataset, province){
+  province_symbol <- province_symbols[[province]]
+  dataset <- filter(dataset, provincia == province_symbol)
+  res <- get_sired_daily_all_it(dataset)
+  return(res)
+}
+
+get_sired_daily_by_prov_st <- function(dataset, province){
+  province_symbol <- province_symbols[[province]]
+  dataset <- filter(dataset, provincia == province_symbol)
+  res <- get_sired_daily_all_st(dataset)
+  return(res)
+}
+
+
 ### Provenienza visitatori italiani per provincia
 get_sired_italian_visitors_by_province <- function(dataset, province_name, perc = 0){
         Trentino <- dataset[,5] + dataset[,6]

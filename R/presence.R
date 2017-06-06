@@ -29,6 +29,12 @@ get_presence_visitors <-  function(dataset){
         
 }
 
+get_presence_visitors_by_prov <- function(dataset, province){
+  dataset <- filter(dataset, province == province)
+  res <- get_presence_visitors(dataset)
+  return(res)
+}
+
 get_presence_foreigners <- function(dataset){
         red <- dataset[, c(3,5)]
         x <- aggregate(red$presence_foreigners ~ red$day, data = red, FUN = sum)
@@ -37,9 +43,16 @@ get_presence_foreigners <- function(dataset){
         presence <- as.numeric(x[,2])
         date <- as.Date((x$date))
         df <- data.frame(date, presence)
-        
-        
 }
+
+
+get_presence_foreigners_by_prov <- function(dataset, province){
+  dataset <- filter(dataset, province == province)
+  res <- get_presence_foreigners(dataset)
+  return(res)
+  
+}
+
 
 get_tot_visitors_by_prov <- function(dataset, preset = 9){
         visitors <- dataset[dataset$customer_class == "visitor", ]
