@@ -4,6 +4,7 @@ source("R/destination_by_municipalities.R")
 source("R/destination_by_provinces.R")
 source("R/covisit_tabs.R")
 source("R/province_tab.R")
+source("R/province_subtab.R")
 
 dataset <- read.csv("data/sardegna_destinations_for_municipalities.csv")
 
@@ -13,6 +14,7 @@ comuni <- fread("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
 
 
 build_items <- function(){
+        
 
 tabItems(          
   tabItem(
@@ -31,7 +33,6 @@ tabItems(
         )
         
       ))),
-  
         tabItem(
                 tabName = "provenienze",
                 fluidPage(
@@ -132,13 +133,21 @@ tabItems(
                 )
         ),
         create_province_tab("Cagliari", "ca_it", "ca_st"),
+        create_province_sub_tab("Cagliari", "ca_sub_it"),
         create_province_tab("Oristano", "or_it", "or_st"),
+        create_province_sub_tab("Oristano", "or_sub_it"),  
         create_province_tab("Nuoro", "nu_it", "nu_st"),
+        create_province_sub_tab("Nuoro", "nu_sub_it"),
         create_province_tab("Ogliastra", "og_it", "og_st"),
+        create_province_sub_tab("Ogliastra", "og_sub_it"),
         create_province_tab("Olbia-Tempio", "ot_it", "ot_st"),
+        create_province_sub_tab("Olbia-Tempio", "ot_sub_it"),
         create_province_tab("Carbonia-Iglesias", "ci_it", "ci_st"),
+        create_province_sub_tab("Carbonioa-Iglesias", "ci_sub_it"),
         create_province_tab("Sassari", "ss_it", "ss_st"),
+        create_province_sub_tab("Sassari", "ss_sub_it"),
         create_province_tab("Medio Campidano", "vs_it", "vs_st"),
+        create_province_sub_tab("Medio Campidano", "vs_sub_it"),  
         tabItem(
                 tabName = "prov_interno",
                 fluidPage(
@@ -280,7 +289,10 @@ tabItems(
         #         )
         #         # h2("Destinations by municipalities"),
         #       
-        # )                
+        # )
+
+
+
         
 
   
