@@ -470,33 +470,42 @@ shinyServer(function(input, output, session) {
                   
                 })
                 
-               
+   
+                
                 output$ca_it <- render_province_it("Cagliari", input)
+                output$ca_sub_it <- province_curve("Cagliari", input)
                 output$ca_st <- render_province_st("Cagliari", input)
                 
                 
                 output$or_it <- render_province_it("Oristano", input)
+                output$or_sub_it <- province_curve("Oristano", input)
                 output$or_st <- render_province_st("Oristano", input)
                 
                 output$nu_it <- render_province_it("Nuoro", input)
+                output$nu_sub_it <- province_curve("Nuoro", input)
                 output$nu_st <- render_province_st("Nuoro", input)
                 
                 output$ci_it <- render_province_it("Carbonia-Iglesias", input)
+                output$ci_sub_it <- province_curve("Carbonia-Iglesias", input)
                 output$ci_st <- render_province_st("Carbonia-Iglesias", input)
                 
                 output$og_it <- render_province_it("Ogliastra", input)
+                output$og_sub_it <- province_curve("Ogliastra", input)
                 output$og_st <- render_province_st("Ogliastra", input)
                 
                 output$ot_it <- render_province_it("Olbia-Tempio", input)
+                output$ot_sub_it <- province_curve("Olbia-Tempio", input)
                 output$ot_st <- render_province_st("Olbia-Tempio", input)
                 
                 output$ss_it <- render_province_it("Sassari", input)
+                output$ss_sub_it <- province_curve("Sassari", input)
                 output$ss_st <- render_province_st("Sassari", input)
                 
                 output$vs_it <- render_province_it("Medio Campidano", input)
+                output$vs_sub_it <- province_curve("Medio Campidano", input)
                 output$vs_st <- render_province_st("Medio Campidano", input)
                 
-                output$abcd <- province_curve("Cagliari")
+          
                 
 
                 
