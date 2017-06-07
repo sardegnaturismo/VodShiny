@@ -29,9 +29,9 @@ get_presence_visitors <-  function(dataset){
         
 }
 
-get_presence_visitors_by_prov <- function(dataset, province){
-  dataset <- filter(dataset, province == province)
-  res <- get_presence_visitors(dataset)
+get_presence_visitors_by_prov <- function(dataset, province_name){
+  provincial_dataset <- dataset[dataset$province == province_name,]
+  res <- get_presence_visitors(provincial_dataset)
   return(res)
 }
 
@@ -46,9 +46,9 @@ get_presence_foreigners <- function(dataset){
 }
 
 
-get_presence_foreigners_by_prov <- function(dataset, province){
-  dataset <- filter(dataset, province == province)
-  res <- get_presence_foreigners(dataset)
+get_presence_foreigners_by_prov <- function(dataset, province_name){
+  provincial_dataset <- dataset[dataset$province == province_name,]
+  res <- get_presence_foreigners(provincial_dataset)
   return(res)
   
 }
