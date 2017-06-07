@@ -85,7 +85,7 @@ province_curve <- function(province, input){
   x <- renderPlotly({
          
           
-    italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
+    italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
     foreigners <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
     sired_daily <- fread("data/sired_daily_all.csv")
 
@@ -111,27 +111,31 @@ province_curve <- function(province, input){
       if(input[[radio_button_id]] == "vodafone"){
               all_visitors <- rbind(visitors, strangers)
               leg <- c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red")
-              y_limits <- c(1000, 750000)
+              y_limits <- vodafone_y_limits[[province]]
+
               
       }else if (input[[radio_button_id]] == "sired"){
               all_visitors <- rbind(sired_italians, sired_foreigners)
               leg <- c("Italiani (dati Sired)" = "orange", "Stranieri (dati Sired)" = "green")
-              y_limits <- c(0, 25000)
+              y_limits <- sired_y_limits[[province]]
               
       }else{
               all_visitors <- rbind(visitors, strangers, sired_italians, sired_foreigners)
               leg <- c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red", "Italiani (dati Sired)" = "orange", "Stranieri (dati Sired)" = "green")
-              y_limits <- c(0,750000)
+              y_limits <- vodafone_y_limits[[province]]
       }
       
       
  
       p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(y_limits)  +
-      scale_colour_manual(values = leg) + theme_minimal(base_size = 8)
+      scale_colour_manual(values = leg) + theme_minimal(base_size = 7)
       # 
       p.labs <- p + labs(x = "periodo", y = "")
       s <- p.labs
-      ggplotly(s)
+      gg <- plotly_build(s)
+      #gg <- ggplotly(s, tooltip = "presence")
+      
+      
 
    
   })
