@@ -143,7 +143,7 @@ tabItems(
         create_province_tab("Olbia-Tempio", "ot_it", "ot_st"),
         create_province_sub_tab("Olbia-Tempio", "ot_sub_it"),
         create_province_tab("Carbonia-Iglesias", "ci_it", "ci_st"),
-        create_province_sub_tab("Carbonioa-Iglesias", "ci_sub_it"),
+        create_province_sub_tab("Carbonia-Iglesias", "ci_sub_it"),
         create_province_tab("Sassari", "ss_it", "ss_st"),
         create_province_sub_tab("Sassari", "ss_sub_it"),
         create_province_tab("Medio Campidano", "vs_it", "vs_st"),
