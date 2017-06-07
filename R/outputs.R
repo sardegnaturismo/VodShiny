@@ -2,8 +2,11 @@ render_province_it <- function(province, input){
       province_symbol = tolower(province_symbols[[province]])  
       slider_id <- paste("preset_", province_symbol, "_it", sep = '' )  
       radio_button_id <- paste("color_", province_symbol, "_1", sep = '')
+  
+ 
       
        render_prov_it <- renderPlotly({
+                
                 it <- fread("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
                 it_sired <- fread("data/sired_provenienze_italiani.csv")
                 
@@ -21,7 +24,8 @@ render_province_it <- function(province, input){
                         layout(title =  paste("Provenienza dei visitatori italiani"), annotations = list(
                                 list(x = 0.20 , y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
                                 list(x = 0.80 , y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))
-                p    
+                p
+                
                 
         })
         
@@ -39,7 +43,14 @@ render_province_st <- function(province, input){
   slider_id <- paste("preset_", province_symbol, "_st", sep = '' )  
   radio_button_id <- paste("color_", province_symbol, "_2", sep = '')
   
+  
+  
+  
+  
+  
  render_prov_st  <- renderPlotly({
+         
+         
          st <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
          st_sired <- fread("data/sired_provenienze_stranieri.csv")
          
@@ -64,10 +75,16 @@ render_province_st <- function(province, input){
  return(render_prov_st)
 }
 
-province_curve <- function(province){
+province_curve <- function(province, input){
+        
+        province_symbol = tolower(province_symbols[[province]])
+        tab_id = paste(province_symbol, "_sub", sep = '')
+        radio_button_id <- paste(tab_id, "_1")        
   
-  
+ 
   x <- renderPlotly({
+         
+          
     italians <- fread("data/sardegna_presence_Sep15-Sep16_Italians_comunes.csv")
     foreigners <- fread("data/sardegna_presence_Sep15-Sep16_foreigners_provinces.csv")
     sired_daily <- fread("data/sired_daily_all.csv")
@@ -89,11 +106,29 @@ province_curve <- function(province){
       strangers$Presenze <- "Stranieri (dati Vodafone)"
       sired_italians$Presenze <- "Italiani (dati Sired)"
       sired_foreigners$Presenze <- "Stranieri (dati Sired)"
-      all_visitors <- rbind(visitors, strangers, sired_italians, sired_foreigners)
       
-      p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(1000, 750000) + ggtitle("Visitatori in Sardegna") +
-        scale_colour_manual(values = c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red", "Italiani (dati Sired)" = "orange", "Stranieri (dati Sired)" = "green" )) + theme_minimal(base_size = 8) 
+      leg <- NULL
+      if(input[[radio_button_id]] == "vodafone"){
+              all_visitors <- rbind(visitors, strangers)
+              leg <- c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red")
+              y_limits <- c(1000, 750000)
+              
+      }else if (input[[radio_button_id]] == "sired"){
+              all_visitors <- rbind(sired_italians, sired_foreigners)
+              leg <- c("Italiani (dati Sired)" = "orange", "Stranieri (dati Sired)" = "green")
+              y_limits <- c(0, 25000)
+              
+      }else{
+              all_visitors <- rbind(visitors, strangers, sired_italians, sired_foreigners)
+              leg <- c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red", "Italiani (dati Sired)" = "orange", "Stranieri (dati Sired)" = "green")
+              y_limits <- c(0,750000)
+      }
       
+      
+ 
+      p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(y_limits)  +
+      scale_colour_manual(values = leg) + theme_minimal(base_size = 8)
+      # 
       p.labs <- p + labs(x = "periodo", y = "")
       s <- p.labs
       ggplotly(s)
@@ -101,7 +136,7 @@ province_curve <- function(province){
    
   })
   
- x
+ return(x)
   
 }
 
