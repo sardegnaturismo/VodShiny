@@ -323,7 +323,7 @@ shinyServer(function(input, output, session) {
                         }
                         
                         p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, colors = colorRamp(c("blue", "red")), type = "heatmap") %>%
-                        layout(title = "Co-visite Totali", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))        
+                        layout(title = "Co-visite Totali (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))        
         
                         
                         
@@ -340,7 +340,7 @@ shinyServer(function(input, output, session) {
                         }
 
                         p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, type = "heatmap") %>%
-                                layout(title = "Co-visite Residenti", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))
+                                layout(title = "Co-visite Residenti (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))
 
                 })
                 
@@ -353,7 +353,7 @@ shinyServer(function(input, output, session) {
                         }
                         
                         p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, colors = colorRamp(c("darkgreen", "white")), type = "heatmap") %>%
-                                layout(title = "Co-visite Visitatori Italiani", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))
+                                layout(title = "Co-visite Visitatori Italiani (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))
                 })
                 
                 
@@ -366,7 +366,7 @@ shinyServer(function(input, output, session) {
                         }
                         
                         p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, colors = colorRamp(c("purple", "white")), type = "heatmap") %>%
-                                layout(title = "Co-visite Visitatori Stranieri", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))                        
+                                layout(title = "Co-visite Visitatori Stranieri (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))                        
                         
                         
                 })
@@ -384,7 +384,7 @@ shinyServer(function(input, output, session) {
                  
                         selected_color = rev(colorRampPalette(brewer.pal(9, "Reds"))(length(visitors$origin)))
                         p <- plot_ly(data = visitors, x = ~origin, y = ~presence, type = 'bar', marker = list(color = selected_color)) %>%
-                                layout(title = paste("Comune di Destinazione: ", input$municipality3),
+                                layout(title = paste("Comune di Destinazione: ", input$municipality3, "(fonte Vodafone)"),
                                        yaxis = list(tickfont = list(size = 8)), xaxis = list(title = "Regione di provenienza", tickfont = list(size = 8)))
 
 
