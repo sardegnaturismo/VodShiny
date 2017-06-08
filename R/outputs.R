@@ -127,13 +127,12 @@ province_curve <- function(province, input){
       
       
  
-      p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(y_limits)  +
-      scale_colour_manual(values = leg) + theme_minimal(base_size = 7)
+      p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(y_limits)  + 
+      scale_colour_manual(values = leg) + theme_minimal(base_size = 8)
       # 
-      p.labs <- p + labs(x = "periodo", y = "")
+      p.labs <- p + scale_y_continuous(labels = comma) + labs(x = "periodo", y = "")
       s <- p.labs
-      gg <- plotly_build(s)
-      #gg <- ggplotly(s, tooltip = "presence")
+      ggplotly(s)
       
       
 

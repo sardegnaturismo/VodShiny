@@ -18,12 +18,12 @@ create_province_tab <- function(province, it_diagram, st_diagram){
   
    tab <- tabItem(
         tabName = province_symbol,
-    tabsetPanel(
-          tabPanel(
-                  title = province_symbol,
+    # tabsetPanel(
+    #       tabPanel(
+    #               title = province_symbol,
                   
                   fluidPage(
-                          h2(id= "province_title", province),
+                          h3(id= "province_title", province),
                           fluidRow(
                                   column(
                                           width = 2,
@@ -54,46 +54,46 @@ create_province_tab <- function(province, it_diagram, st_diagram){
                                   ),
                                   column(
                                           width = 10,
-                                          plotlyOutput(it_diagram, inline = T)
+                                          plotlyOutput(it_diagram)
                                   ),
                                   column(
                                           width = 10,
-                                          plotlyOutput(st_diagram, inline = T)
+                                          plotlyOutput(st_diagram)
                                   )
                                   
                           )
                           
-                  )),
-          tabPanel(
-                  title = "daily presence",
-                  fluidPage(
-                          h2("Daily presences", id="province_title"),
-                          fluidRow(
-                                  column(
-                                          width = 2,
-                                          wellPanel(
-                                                  tags$fieldset(
-                                                          tags$legend('Dati', class = 'fieldlegend'),       
-                                                          class = "fieldgroup",        
-                                                          radioButtons('aaaa', "Fonte:",
-                                                                       c("Vodafone" = "vodafone", "Sired" = "sired", "All" = "all"))                                                        
-                                                          
-                                                  ))                                          
-                                  ),
-                                  column(
-                                          width = 6
-                                          #plotOutput("abcd", inline = T)   
-
-                                  )
-                                  
-                          )
-                          
-                  )
-                  
-          )
+                  ))
+          # tabPanel(
+          #         title = "daily presence",
+          #         fluidPage(
+          #                 h2("Daily presences", id="province_title"),
+          #                 fluidRow(
+          #                         column(
+          #                                 width = 2,
+          #                                 wellPanel(
+          #                                         tags$fieldset(
+          #                                                 tags$legend('Dati', class = 'fieldlegend'),       
+          #                                                 class = "fieldgroup",        
+          #                                                 radioButtons('aaaa', "Fonte:",
+          #                                                              c("Vodafone" = "vodafone", "Sired" = "sired", "All" = "all"))                                                        
+          #                                                 
+          #                                         ))                                          
+          #                         ),
+          #                         column(
+          #                                 width = 6
+          #                                 #plotOutput("abcd", inline = T)   
+          # 
+          #                         )
+          #                         
+          #                 )
+          #                 
+          #         )
+          #         
+          # )
           
           
-  ))
+  
   # tabItem(
   #   tabName = province_symbol,
   #  

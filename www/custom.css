@@ -1,5 +1,12 @@
-.content-wrapper,
-.right-side {
+.main-header .logo{
+  font-size: 18px;
+  padding: 5px 15px;
+  line-height: normal;
+} 
+
+
+
+.content-wrapper, .right-side {
   background-color: #ffffff;
 }
 .fieldgroup{
@@ -33,8 +40,9 @@
         width: 200px;
 }
 
-#province_title{
+#region_title, #province_title{
   text-align: center;
+  
 }
 
 #province_subtitle{

@@ -81,6 +81,8 @@ tabItems(
         tabItem(
                 tabName = "presenze_regione",
                 fluidPage(
+                  h3("Regione Sardegna", id="region_title"),
+                  h6("presenze giornaliere", id = "province_subtitle"),                  
                         fluidRow(
                                 # column(
                                 #         width = 8, offset = 2,
@@ -199,15 +201,15 @@ tabItems(
                                 ),
                         br(),
                         fluidRow(
+                                # column(
+                                #         width = 4,
+                                #         wellPanel(
+                                #                 selectInput("municipality2", "Comune:", choices = unique(sort(dataset[,2])))        
+                                #         )
+                                #         
+                                # ),
                                 column(
-                                        width = 4,
-                                        wellPanel(
-                                                selectInput("municipality2", "Comune:", choices = unique(sort(dataset[,2])))        
-                                        )
-                                        
-                                ),
-                                column(
-                                        width = 7,
+                                        width = 7, offset = 4,
                                         plotlyOutput("plot2")
                                 )
                         )
@@ -223,7 +225,7 @@ tabItems(
                           width = 2, 
                           wellPanel(
                             selectInput("municipality3", "Comune:", choices = unique(sort(comuni[["comune_name"]]))),
-                            sliderInput("thresh2", "Percentage threshold:", min = 1, max = 5, value = 2.5, step = 0.5)                
+                            sliderInput("thresh2", "Soglia di visualizzazione (%)", min = 1, max = 5, value = 2.5, step = 0.5)                
                           )                    
                         ),
                         column(
@@ -255,7 +257,7 @@ tabItems(
                tags$fieldset(
                  class = "fieldgroup",
                  selectInput(inputId = "cat_prov", label = "Categoria", choices = c("Visitatori italiani", "Visitatori stranieri"), selected = "Visitatori italiani"),
-                 sliderInput("prov_it1", "Regioni visualizzate", min=1, max= 5, value = 2.5, step = 0.5)
+                 sliderInput("prov_it1", "Soglia di visualizzazione (%)", min=1, max= 5, value = 2.5, step = 0.5)
                )))
           )
            

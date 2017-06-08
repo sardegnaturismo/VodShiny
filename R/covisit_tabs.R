@@ -12,18 +12,20 @@ create_tab <- function(tabname, plot_id1, plot_id2, check_group_id){
       tab <-  tabItem(
                 tabName = tabname,
                 fluidPage(
+                        
                         fluidRow(
                                 column(
                                         width = 3, 
                                         wellPanel(
                                                 tags$fieldset(
-                                                                checkboxGroupInput(check_group_id, "POI", choices = locations, selected = locations[1:10])
+                                                                checkboxGroupInput(check_group_id, "Punti di interesse", choices = locations, selected = locations[1:10])
                                                                 #selectInput("origin_all", "POI", choices = locations, multiple = T, selected = locations[1:4])
                                                               )
                                                  )
                                        ),         
                                 column(
                                         width = 8,
+                                        h3("Co-visite tra Punti di interesse (fonte Vodafone)", id="region_title"),br(),br(),
                                         plotlyOutput(plot_id1),
                                         br(),
                                         br(),
