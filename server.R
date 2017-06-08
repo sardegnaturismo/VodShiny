@@ -234,7 +234,7 @@ shinyServer(function(input, output, session) {
                     # theme(axis.title.y = element_text(size=8), axis.title.x = element_text(size = 8),  
                             #       plot.margin = unit(c(0,0,0,1.2), 'lines'))      #theme_minimal()
                 
-                        ggplotly(s)
+                        p = ggplotly(s)
                 })
                 
                 
@@ -453,7 +453,7 @@ shinyServer(function(input, output, session) {
                   add_pie(data = visitors_list[[8]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[8]][,1]),hoverinfo = 'text', marker = list( line = list(color = '#FFFFFF', width = 1)), domain = list(x = c(0.75, 1), y = c(0, 0.45))) %>%                 
                           
                                    
-                  layout(title = title, height = 580, annotations = list(
+                  layout(title = title, height = 480, annotations = list(
                                   list(x = 0.10 , y = 1.05, text = provinces[1], showarrow = F, xref='paper', yref='paper'),
                                   list(x = 0.37 , y = 1.05, text = provinces[2], showarrow = F, xref='paper', yref='paper'),
                                   list(x = 0.62 , y = 1.05, text = provinces[3], showarrow = F, xref='paper', yref='paper'),
