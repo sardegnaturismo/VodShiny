@@ -9,8 +9,8 @@ create_province_sub_tab <- function(province, plot_id){
         tab <- tabItem(
                 tabName = tab_id,
                 fluidPage(
-                        h2(province, id="province_title"),
-                        h3("Presenze giornaliere", id = "province_subtitle"),
+                        h3(province, id="province_title"),
+                        h6("presenze giornaliere", id = "province_subtitle"),
                         fluidRow(
                                 column(
                                         width = 2,
@@ -25,7 +25,7 @@ create_province_sub_tab <- function(province, plot_id){
                                 ),
                                 column(
                                         width = 10,
-                                        plotlyOutput(plot_id, inline = T)   
+                                        plotlyOutput(plot_id)   
                                         
                                 )
                                 
