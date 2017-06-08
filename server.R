@@ -4,6 +4,7 @@ require(shinydashboard)
 require(data.table)
 require(dplyr)
 require(plotly)
+require(scales)
 require(RColorBrewer)
 source("R/destination_by_municipalities.R")
 source("R/destination_by_provinces.R")
@@ -42,16 +43,19 @@ shinyServer(function(input, output, session) {
                         x = selected_data[1:input$th,2],
                         type = "bar",
                         orientation = 'h',
-                        marker = list(color = selected_color)
+                        marker = list(color = 'rgb(158,202,225)',
+                                      line = list(color = 'rgb(8,48,107)',
+                                                  width = 1.5))
+                        # marker = list(color = selected_color)
                 ) %>% 
-                layout(title = paste("Comune di destinazione: ", input$municipality1), yaxis = list(tickfont = list(size = 7)), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)))        
+                layout(title = paste("Comune di destinazione: ", input$municipality1, "(fonte Vodafone)"), yaxis = list(tickfont = list(size = 7, color = 'black')), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)))        
                 
                 
                 })
         
         output$plot2 <- renderPlotly({
                 dataset <- read.csv("data/sardegna_destinations_for_municipalities.csv")
-                selected_data <- destination_by_month(dataset, municipality_name = input$municipality2)
+                selected_data <- destination_by_month(dataset, municipality_name = input$municipality1)
                 # plot(x = 1:13, y = selected_data$visitors, type = 'o', xaxt = 'n', ylab = "Visitatori", xlab = "Periodo", col = 'blue', main = input$municipality2)
                 # grid()
                 # axis(1, at = 1:13, labels = selected_data$period)
@@ -131,11 +135,11 @@ shinyServer(function(input, output, session) {
                         sired_foreigners$Presenze <- "Stranieri (dati Sired)"
                         all_visitors <- rbind(visitors, strangers, sired_italians, sired_foreigners)
                                 
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(1000, 750000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(1000, 750000) +
                                         scale_colour_manual(values = c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red", "Italiani (dati Sired)" = "orange", "Stranieri (dati Sired)" = "green" )) + theme_minimal(base_size = 8) 
                                 
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs                        
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs                        
                         
                         
                         
@@ -144,77 +148,77 @@ shinyServer(function(input, output, session) {
                         strangers$Presenze <- "Stranieri (dati Vodafone)"
                         all_visitors <- rbind(visitors, strangers)
                         
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(1000, 750000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(1000, 750000) +
                                 scale_colour_manual(values = c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs
                 }else if (((input$vis_control == "Dati Sired") & (length(input$vis_control) == 1)) | (all(c("Visitatori Italiani", "Visitatori Stranieri", "Dati Sired") %in% input$vis_control) & length(input$vis_control) == 3)){
                         sired_italians$Presenze <- "Italiani (dati Sired)"
                         sired_foreigners$Presenze <- "Stranieri (dati Sired)"
                         
                         all_visitors <- rbind(sired_italians, sired_foreigners)
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 95000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 95000) +
                                 scale_colour_manual(values = c("Italiani (dati Sired)" = "green", "Stranieri (dati Sired)" = "orange")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs
                 }else if ((all(c("Visitatori Italiani", "Dati Vodafone") %in% input$vis_control)) & length(input$vis_control) == 2){
                         visitors$Presenze <- "Italiani (dati Vodafone)"
                         all_visitors <- visitors
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 750000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 750000) +
                                 scale_colour_manual(values = c("Italiani (dati Vodafone)" = "blue")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs                        
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs                        
 
                 }else if ((all(c("Visitatori Stranieri", "Dati Vodafone") %in% input$vis_control)) & length(input$vis_control) == 2){
                         strangers$Presenze <- "Stranieri (dati Vodafone)"
                         all_visitors <- strangers
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 250000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 250000) +
                                 scale_colour_manual(values = c("Stranieri (dati Vodafone)" = "red")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs
                         
                 }else if ((all(c("Visitatori Italiani", "Dati Sired") %in% input$vis_control)) & length(input$vis_control) == 2){
                         sired_italians$Presenze <- "Italiani (dati Sired)"
                         all_visitors <- sired_italians
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 95000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 95000) +
                                 scale_colour_manual(values = c("Italiani (dati Sired)" = "orange")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs                        
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs                        
                         
                 }else if ((all(c("Visitatori Stranieri", "Dati Sired") %in% input$vis_control)) & length(input$vis_control) == 2){
                         sired_foreigners$Presenze <- "Stranieri (dati Sired)"
                         all_visitors <- sired_foreigners
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 95000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 95000) +
                                 scale_colour_manual(values = c("Stranieri (dati Sired)" = "green")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs                        
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs                        
                         
                 }else if ((input$vis_control == 'Visitatori Italiani') & (length(input$vis_control) == 1) || (all(c("Visitatori Italiani", "Dati Vodafone", "Dati Sired") %in% input$vis_control)) & length(input$vis_control) == 3){
                         visitors$Presenze <- "Italiani (dati Vodafone)"
                         sired_italians$Presenze <- "Italiani (dati Sired)" 
                         all_visitors <- rbind(visitors, sired_italians)                        
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 700000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 700000) +
                                 scale_colour_manual(values = c("Italiani (dati Vodafone)" = "blue", "Italiani (dati Sired)" = "orange")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs
                         
                         
                 }else if ((input$vis_control == 'Visitatori Stranieri') & (length(input$vis_control) == 1) || (all(c("Visitatori Stranieri", "Dati Vodafone", "Dati Sired") %in% input$vis_control)) & length(input$vis_control) == 3){
                         strangers$Presenze <- "Stranieri (dati Vodafone)"
                         sired_foreigners$Presenze <- "Stranieri (dati Sired)"
                         all_visitors <- rbind(strangers, sired_foreigners)                        
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 200000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(0, 200000) +
                                 scale_colour_manual(values = c("Stranieri (dati Vodafone)" = "red", "Stranieri (dati Sired)" = "green")) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs 
+                        # p.labs <- p + labs(x = "periodo", y = "")
+                        # s <- p.labs 
     
                 }else{
                         visitors$Presenze <- "Italiani (dati Vodafone)"
@@ -223,18 +227,20 @@ shinyServer(function(input, output, session) {
                         sired_foreigners$Presenze <- "Stranieri (dati Sired)"
                         all_visitors <- rbind(visitors, strangers, sired_italians, sired_foreigners)
                         
-                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(1000, 750000) + ggtitle("Visitatori in Sardegna") +
+                        p = ggplot(data = all_visitors, aes(date, presence)) + geom_line(aes(colour=Presenze)) + ylim(1000, 750000) +
                                 scale_colour_manual(values = c("Italiani (dati Vodafone)" = "blue", "Stranieri (dati Vodafone)" = "red", "Italiani (dati Sired)" = "orange", "Stranieri (dati Sired)" = "green" )) + theme_minimal(base_size = 8) 
                         
-                        p.labs <- p + labs(x = "periodo", y = "")
-                        s <- p.labs
                         
                 }
                     
                     # theme(axis.title.y = element_text(size=8), axis.title.x = element_text(size = 8),  
                             #       plot.margin = unit(c(0,0,0,1.2), 'lines'))      #theme_minimal()
-                
-                        ggplotly(s)
+                    
+                   
+                    p.labs <- p + scale_y_continuous(labels = comma) + labs(x = "periodo", y = "")
+                    s <- p.labs
+                    ggplotly(s)
+                    
                 })
                 
                 
@@ -432,13 +438,13 @@ shinyServer(function(input, output, session) {
                   
                   if(input$cat_prov == "Visitatori italiani"){
                     independent_var = ~origin
-                    title = "Provenienza dei visitatori italiani per provincia"
+                    title = "Provenienza dei visitatori italiani per provincia (fonte Vodafone)"
                     selected_colors = colorRampPalette(brewer.pal(8, "Accent"))(20)
                     #selected_colors <- (colorRampPalette(brewer.pal(9, "Reds"))(length(visitors_list[[1]]$origin)))
                     
                   }else{
                     independent_var = ~country
-                    title = "Provenienza dei visitatori stranieri per provincia"
+                    title = "Provenienza dei visitatori stranieri per provincia (fonte Vodafone)"
                     selected_colors = NULL
                     #selected_colors <- (colorRampPalette(brewer.pal(9, "Blues"))(length(visitors_list[[1]]$country)))
                   }
