@@ -27,9 +27,11 @@ shinyServer(function(input, output, session) {
                 par(mar = c(5,6,4,2))
                 
                 if (input$color == 'colore'){
-                        selected_color = c(rainbow(length(selected_data[,1])))
+                        selected_color = 'rgb(158,202,225)'
+                        line_color = 'rgb(8,48,107)'
                 }else{
-                        selected_color = NULL
+                        selected_color = 'rgb(211,211,211)'
+                        line_color = 'rbg(112,128,144)'
                 }
 
                 #print(selected_color)
@@ -43,8 +45,8 @@ shinyServer(function(input, output, session) {
                         x = selected_data[1:input$th,2],
                         type = "bar",
                         orientation = 'h',
-                        marker = list(color = 'rgb(158,202,225)',
-                                      line = list(color = 'rgb(8,48,107)',
+                        marker = list(color = selected_color,
+                                      line = list(color = line_color,
                                                   width = 1.5))
                         # marker = list(color = selected_color)
                 ) %>% 
