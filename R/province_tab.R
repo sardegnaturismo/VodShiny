@@ -23,7 +23,7 @@ create_province_tab <- function(province, it_diagram, st_diagram){
     #               title = province_symbol,
                   
                   fluidPage(
-                          h3(id= "province_title", province),
+                        
                           fluidRow(
                                   column(
                                           width = 2,
@@ -32,7 +32,7 @@ create_province_tab <- function(province, it_diagram, st_diagram){
                                                   tags$fieldset(
                                                           tags$legend('Visitatori italiani', class = 'fieldlegend'),       
                                                           class = "fieldgroup",        
-                                                          sliderInput(slider_id1, "Regioni visualizzate", min=1, max= 5, value = 2, step = 0.5),
+                                                          sliderInput(slider_id1, "Soglia di visualizzazione Regioni (%)", min=1, max= 5, value = 2, step = 0.5),
                                                           radioButtons(radio_button_id1, "Visualizzazione pie chart 1:",
                                                                        c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                           
@@ -43,7 +43,7 @@ create_province_tab <- function(province, it_diagram, st_diagram){
                                                           
                                                           tags$legend('Visitatori stranieri', class = 'fieldlegend'),       
                                                           class = "fieldgroup",        
-                                                          sliderInput(slider_id2, "Nazioni visualizzate", min=1, max= 5, value = 1, step = 0.5),
+                                                          sliderInput(slider_id2, "Soglia di visualizzazione Nazioni (%)", min=1, max= 5, value = 1, step = 0.5),
                                                           radioButtons(radio_button_id2, "Visualizzazione pie chart 2:",
                                                                        c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                   )
@@ -53,6 +53,7 @@ create_province_tab <- function(province, it_diagram, st_diagram){
                                           
                                   ),
                                   column(
+                                          h3(id= "province_title", province),
                                           width = 10,
                                           plotlyOutput(it_diagram)
                                   ),
