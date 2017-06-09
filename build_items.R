@@ -27,6 +27,7 @@ tabItems(
         h1("Sardinia Smart Tourism"),
         tags$div(
           h4("Analisi del settore turistico sardo nel periodo Settembre 2015 - Settembre 2016"),
+          h5("Lo studio utilizza dati SiRED e dati anonimi ed aggregati della rete di Vodafone Italia, elaborati con metodologie di data science per fornire una visione complessiva dei visitatori in Sardegna"),
           br(),
           tags$img(src="home1.png", class="img-circle", size = "1000x800"),
           class="well"
@@ -43,7 +44,7 @@ tabItems(
                                                 tags$fieldset(
                                                      tags$legend('Visitatori italiani', class = 'fieldlegend'),       
                                                      class = "fieldgroup",        
-                                                     sliderInput("preset_it", "Regioni visualizzate", min=1, max= 5, value = 2, step = 0.5),
+                                                     sliderInput("preset_it", "Soglia di visualizzazione Regioni (%)", min=1, max= 5, value = 2, step = 0.5),
                                                      radioButtons("color1", "Visualizzazione pie chart 1:",
                                                                      c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                         
@@ -54,7 +55,7 @@ tabItems(
 
                                                     tags$legend('Visitatori stranieri', class = 'fieldlegend'),       
                                                     class = "fieldgroup",        
-                                                    sliderInput("preset_st", "Nazioni visualizzate", min=1, max= 5, value = 1, step = 0.5),
+                                                    sliderInput("preset_st", "Soglia di visualizzazione Nazioni (%)", min=1, max= 5, value = 1, step = 0.5),
                                                     radioButtons("color2", "Visualizzazione pie chart 2:",
                                                                c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                 )
@@ -160,7 +161,7 @@ tabItems(
                                                
                                                 selectInput("province1", "Provincia di destinazione:", choices = unique(sort(provinces[,2]))),
                                                 radioButtons("diagram_type", "Scegli diagramma:",
-                                                             c("Pie" = "pie", "Bar Chart" = "bar"), selected = 'pie')                                                
+                                                             c("Pie" = "pie", "Bar Chart" = "bar"), selected = 'bar')                                                
                                         )
 
                                         
@@ -249,7 +250,7 @@ tabItems(
            column(id="all_provinces",
                   width = 12,
                   plotlyOutput("plot_prov")
-                  ),br(), br(), br(),br(), br(),
+                  ),br(), 
       fluidRow(     
            column(
              width = 9, offset = 1, 
