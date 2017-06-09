@@ -43,7 +43,7 @@ tabItems(
                                                 tags$fieldset(
                                                      tags$legend('Visitatori italiani', class = 'fieldlegend'),       
                                                      class = "fieldgroup",        
-                                                     sliderInput("preset_it", "Regioni visualizzate", min=1, max= 5, value = 2, step = 0.5),
+                                                     sliderInput("preset_it", "Soglia di visualizzazione Regioni (%)", min=1, max= 5, value = 2, step = 0.5),
                                                      radioButtons("color1", "Visualizzazione pie chart 1:",
                                                                      c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                         
@@ -54,7 +54,7 @@ tabItems(
 
                                                     tags$legend('Visitatori stranieri', class = 'fieldlegend'),       
                                                     class = "fieldgroup",        
-                                                    sliderInput("preset_st", "Nazioni visualizzate", min=1, max= 5, value = 1, step = 0.5),
+                                                    sliderInput("preset_st", "Soglia di visualizzazione Nazioni (%)", min=1, max= 5, value = 1, step = 0.5),
                                                     radioButtons("color2", "Visualizzazione pie chart 2:",
                                                                c("Palette" = "diverging", "Standard" = "standard"), selected = 'diverging')                                                        
                                                 )
@@ -160,7 +160,7 @@ tabItems(
                                                
                                                 selectInput("province1", "Provincia di destinazione:", choices = unique(sort(provinces[,2]))),
                                                 radioButtons("diagram_type", "Scegli diagramma:",
-                                                             c("Pie" = "pie", "Bar Chart" = "bar"), selected = 'pie')                                                
+                                                             c("Pie" = "pie", "Bar Chart" = "bar"), selected = 'bar')                                                
                                         )
 
                                         
