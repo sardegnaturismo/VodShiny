@@ -56,7 +56,7 @@ shinyServer(function(input, output, session) {
                 })
         
         output$plot2 <- renderPlotly({
-                dataset <- read.csv("data/sardegna_destinations_for_municipalities.csv")
+                dataset <- read.csv2("data/sardegna_destinations_for_municipalities.csv")
                 selected_data <- destination_by_month(dataset, municipality_name = input$municipality1)
                 # plot(x = 1:13, y = selected_data$visitors, type = 'o', xaxt = 'n', ylab = "Visitatori", xlab = "Periodo", col = 'blue', main = input$municipality2)
                 # grid()
