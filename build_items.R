@@ -25,11 +25,11 @@ tabItems(
       class="jumbotron text-center",
       tags$div(
         h1("Sardinia Smart Tourism"),
+        h3("Analisi del settore turistico sardo nel periodo Settembre 2015 - Settembre 2016"),br(),
+        p(class='home_p', "Lo studio utilizza dati SiRED e dati anonimi e aggregati della rete di Vodafone Italia elaborati mediante metodi di data science per fornire una visione complessiva dei visitatori in Sardegna"),
         tags$div(
-          h4("Analisi del settore turistico sardo nel periodo Settembre 2015 - Settembre 2016"),
-          h5("Lo studio utilizza dati SiRED e dati anonimi ed aggregati della rete di Vodafone Italia, elaborati con metodologie di data science per fornire una visione complessiva dei visitatori in Sardegna"),
           br(),
-          tags$img(src="home1.png", class="img-circle", size = "1000x800"),
+          tags$img(src="home2.jpg", class="img-rounded", size = "1000x800"),br(),br(),
           class="well"
         )
         
