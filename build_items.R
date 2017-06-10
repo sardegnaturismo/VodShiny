@@ -6,7 +6,7 @@ source("R/covisit_tabs.R")
 source("R/province_tab.R")
 source("R/province_subtab.R")
 
-dataset <- read.csv2("data/sardegna_destinations_for_municipalities.csv")
+dataset <- read.csv2("data/sardegna_destinations_for_municipalities.csv", encoding = 'latin1')
 
 provinces <- read.csv("data/sardegna_destinations_for_provinces.csv")
 presenze_ita_prov <- read.csv("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")

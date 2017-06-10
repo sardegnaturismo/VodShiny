@@ -21,7 +21,7 @@ shinyServer(function(input, output, session) {
   
         #### Destinations by municipality #####
         output$plot1 <- renderPlotly({
-                dataset <- fread("data/sardegna_destinations_for_municipalities.csv")
+                dataset <- fread("data/sardegna_destinations_for_municipalities.csv", encoding = 'Latin-1')
                 selected_data <- destination_by_municipalities(dataset, municipality_name = input$municipality1)
                 print(selected_data)
                 par(mar = c(5,6,4,2))
@@ -56,7 +56,7 @@ shinyServer(function(input, output, session) {
                 })
         
         output$plot2 <- renderPlotly({
-                dataset <- read.csv2("data/sardegna_destinations_for_municipalities.csv")
+                dataset <- fread("data/sardegna_destinations_for_municipalities.csv", encoding = 'Latin-1')
                 selected_data <- destination_by_month(dataset, municipality_name = input$municipality1)
                 # plot(x = 1:13, y = selected_data$visitors, type = 'o', xaxt = 'n', ylab = "Visitatori", xlab = "Periodo", col = 'blue', main = input$municipality2)
                 # grid()
