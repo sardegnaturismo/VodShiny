@@ -269,7 +269,7 @@ shinyServer(function(input, output, session) {
                         #### multiple plot ####
                         p <- plot_ly() %>%
                           add_pie(data = visitors, labels = ~origin, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", origin), hoverinfo = 'text', marker = list(colors = col_it, line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 0.8))) %>%
-                          add_pie(data = sired_visitors, labels = ~regions, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", regions), hoverinfo = 'text', marker = list(colors = col_it, line = list(color = '#FFFFFF')), domain = list(x = c(0.5, 1), y = c(0, 0.8))) %>%
+                          add_pie(data = sired_visitors, labels = ~regions, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", regions), hoverinfo = 'text', domain = list(x = c(0.5, 1), y = c(0, 0.8))) %>%
                           layout(title =  "Provenienza dei visitatori italiani in Sardegna", annotations = list(
                             list(x = 0.22, y = 0.90, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
                             list(x = 0.78, y = 0.90, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))
