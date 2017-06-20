@@ -23,10 +23,13 @@ destination_by_month <- function(dataset, municipality_name){
         dataset = dataset[dataset$municipality == municipality_name,]
         res <- aggregate(dataset$unique_visitors ~ dataset$day, FUN = sum)
         names(res) <- c("month", "visitors")
-        res <- res[order(as.Date(res$month, format="%d/%m/%Y"), decreasing = F),]
+        res$month <- as.Date(res$month, "%m/%d/%Y")
+        res <- res[order(res$month, decreasing = F),]
         row.names(res) <- NULL
-        res <- cbind(period, res)
-        res$period <- factor(res$period, levels = res[["period"]])
- 
+        res$month = format(res$month, format = "%b %Y")
+        #res <- cbind(period, res)
+        res$month <- factor(res$month, levels = res[["month"]])
+        names(res) <- c("period", "visitors")
+        
         res
 }
