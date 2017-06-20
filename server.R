@@ -24,7 +24,7 @@ shinyServer(function(input, output, session) {
                 dataset <- fread("data/sardegna_destinations_for_municipalities.csv", encoding = 'Latin-1')
                 selected_data <- destination_by_municipalities(dataset, municipality_name = input$municipality1)
                 print(selected_data)
-                par(mar = c(5,6,4,2))
+                #par(mar = c(5,6,4,2))
                 
                 if (input$color == 'colore'){
                         selected_color = "rgb(158,202,225)"
