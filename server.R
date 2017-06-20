@@ -49,8 +49,7 @@ shinyServer(function(input, output, session) {
                                       line = list(color = line_color,
                                                   width = 1.5))
                         # marker = list(color = selected_color)
-                ) %>% 
-                layout(title = paste("Comune di destinazione: ", input$municipality1, "(fonte Vodafone)"), yaxis = list(tickfont = list(size = 7, color = 'black')), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)))        
+                ) %>% layout(title = paste("Comune di destinazione: ", input$municipality1, "(fonte Vodafone)"), yaxis = list(tickfont = list(size = 7, color = 'black')), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)))        
                 p
                 
                 })
@@ -108,7 +107,7 @@ shinyServer(function(input, output, session) {
                          theme_minimal(base_size = 8)
                          # theme(axis.title.y = element_text(size=8), axis.title.x = element_text(size = 8),  
                          #       plot.margin = unit(c(0,0,0,1.2), 'lines'))
-                ggplotly(p)
+                plotly::ggplotly(p)
         })
         
         
