@@ -51,7 +51,7 @@ shinyServer(function(input, output, session) {
                         # marker = list(color = selected_color)
                 ) %>% 
                 layout(title = paste("Comune di destinazione: ", input$municipality1, "(fonte Vodafone)"), yaxis = list(tickfont = list(size = 7, color = 'black')), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)))        
-                
+                p
                 
                 })
         
