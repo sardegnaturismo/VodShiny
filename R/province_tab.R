@@ -23,7 +23,7 @@ create_province_tab <- function(province, it_diagram, st_diagram){
     #               title = province_symbol,
                   
                   fluidPage(
-                          h3(id= "province_title", province),
+                        
                           fluidRow(
                                   column(
                                           width = 2,
@@ -53,6 +53,7 @@ create_province_tab <- function(province, it_diagram, st_diagram){
                                           
                                   ),
                                   column(
+                                          h3(id= "province_title", province),
                                           width = 10,
                                           plotlyOutput(it_diagram)
                                   ),
