@@ -7,7 +7,10 @@ source("R/province_tab.R")
 source("R/province_subtab.R")
 
 dataset <- read.csv2("data/sardegna_destinations_for_municipalities.csv", encoding = 'latin1')
+<<<<<<< HEAD
 dataset$municipality = as.factor(dataset$municipality)
+=======
+>>>>>>> 1dad7effb7337fbbbca7a88a8c977788c01744ce
 
 provinces <- read.csv("data/sardegna_destinations_for_provinces.csv")
 presenze_ita_prov <- read.csv("data/sardegna_presence_Sep15-Sep16_Italians_provinces.csv")
@@ -27,10 +30,17 @@ tabItems(
       tags$div(
         h1("Sardinia Smart Tourism"),
         h3("Analisi del settore turistico sardo nel periodo Settembre 2015 - Settembre 2016"),br(),
+<<<<<<< HEAD
         p("Lo studio utilizza dati SiRED e dati anonimi e aggregati della rete di Vodafone Italia, elaborati mediante metodi di data science per fornire una visione complessiva dei visitatori in Sardegna"),
         tags$div(
           br(),
           tags$img(src="home2.jpg", class="img-rounded"),
+=======
+        p(class='home_p', "Lo studio utilizza dati SiRED e dati anonimi e aggregati della rete di Vodafone Italia elaborati mediante metodi di data science per fornire una visione complessiva dei visitatori in Sardegna"),
+        tags$div(
+          br(),
+          tags$img(src="home2.jpg", class="img-rounded", size = "1000x800"),br(),br(),
+>>>>>>> 1dad7effb7337fbbbca7a88a8c977788c01744ce
           class="well"
         )
         
@@ -251,7 +261,7 @@ tabItems(
            column(id="all_provinces",
                   width = 12,
                   plotlyOutput("plot_prov")
-                  ),br(), br(), br(),br(), br(),
+                  ),br(), 
       fluidRow(     
            column(
              width = 9, offset = 1, 
