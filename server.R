@@ -300,11 +300,11 @@ shinyServer(function(input, output, session) {
                     #   layout(title = "Provenienza dei visitatori stranieri in Sardegna", showlegend = T)
                 #####################
                     p <- plot_ly() %>%
-                      add_pie(data = foreigners, labels = ~country, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", country), hoverinfo = 'text',  marker = list(colors = col_st, line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 0.8))) %>%
-                      add_pie(data = sired_foreigners, labels = ~nations, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", nations), hoverinfo = 'text', domain = list(x = c(0.5, 1), y = c(0, 0.8))) %>%
+                      add_pie(data = foreigners, labels = ~country, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", country), hoverinfo = 'text',  marker = list(colors = col_st, line = list(color = '#FFFFFF')), domain = list(x = c(0, 0.5), y = c(0, 1))) %>%
+                      add_pie(data = sired_foreigners, labels = ~nations, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", nations), hoverinfo = 'text', domain = list(x = c(0.5, 1), y = c(0, 1))) %>%
                       layout(title =  "Provenienza dei visitatori stranieri in Sardegna", annotations = list(
-                        list(x = 0.22, y = 0.90, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
-                        list(x = 0.78, y = 0.90, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))                    
+                        list(x = 0.20, y = 1.15, text = "Dati Vodafone", showarrow = F, xref='paper', yref='paper'),
+                        list(x = 0.80, y = 1.15, text = "Dati Sired", showarrow = F, xref='paper', yref='paper')))                    
                     
                     
 
@@ -461,15 +461,15 @@ shinyServer(function(input, output, session) {
                   add_pie(data = visitors_list[[8]], labels = independent_var, values = ~presence, textinfo = 'percent', text = ~paste("origin: ", visitors_list[[8]][,1]),hoverinfo = 'text', domain = list(x = c(0.75, 1), y = c(0, 0.45))) %>%                 
 
                                    
-                  layout(title = title, height = 480, annotations = list(
-                                  list(x = 0.10 , y = 1.0, text = provinces[1], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.37 , y = 1.0, text = provinces[2], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.62 , y = 1.0, text = provinces[3], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.89 , y = 1.0, text = provinces[4], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.10 , y = 0.42, text = provinces[5], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.37 , y = 0.42, text = provinces[6], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.62 , y = 0.42, text = provinces[7], showarrow = F, xref='paper', yref='paper'),
-                                  list(x = 0.89 , y = 0.42, text = provinces[8], showarrow = F, xref='paper', yref='paper')                                  
+                  layout(title = title, height = 580, annotations = list(
+                                  list(x = 0.10 , y = 1.05, text = provinces[1], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.37 , y = 1.05, text = provinces[2], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.62 , y = 1.05, text = provinces[3], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.90 , y = 1.05, text = provinces[4], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.10 , y = 0.48, text = provinces[5], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.37 , y = 0.48, text = provinces[6], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.62 , y = 0.48, text = provinces[7], showarrow = F, xref='paper', yref='paper'),
+                                  list(x = 0.90 , y = 0.48, text = provinces[8], showarrow = F, xref='paper', yref='paper')                                  
                                   )
                    )         
 
