@@ -533,6 +533,11 @@ shinyServer(function(input, output, session) {
                   
                 })                
           
+                output$valid <- DT::renderDataTable({
+                  validation_dataset <- validation_data()
+                  DT::datatable(validation_dataset[, c(1,3,4,5)],  colnames = c("Month", "Vodafone", "Ports Airports", "SiRed"))
+                  
+                })
                 
 
                 
