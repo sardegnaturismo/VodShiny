@@ -40,7 +40,7 @@ create_sired_validation_dataset <- function(dataset, selected_year = 2016){
 
 create_real_validation_dataset <- function(dataset, selected_year = 2016, selected_months = 9){
         date <- paste("01", dataset$mese, dataset$anno, sep = "/")
-        dataset$date <- as.Date(date, "%d/%B/%Y")
+        dataset$date <- as.Date(date, "%d/%m/%Y")
         dataset$residents <- 0
         
         arrivals <- aggregate(data = dataset, arrivi ~ month(date) + year(date), FUN = sum)
