@@ -13,6 +13,7 @@ source("R/covisit.R")
 source("R/utilities.R")
 source("R/sired.R")
 source("R/outputs.R")
+source("R/validation.R")
 
 
 
@@ -513,6 +514,24 @@ shinyServer(function(input, output, session) {
                 output$vs_sub_it <- province_curve("Medio Campidano", input)
                 output$vs_st <- render_province_st("Medio Campidano", input)
                 
+                output$comparazione <- renderPlotly({
+                        vodafone_data <- fread("data/validation/vodafone_global_daily_presence.csv")
+                        real_data <- fread("data/validation/global_real_arrivals_departures_partial.csv")
+                        sired_data <- fread("data/validation/sired_global_daily_presence.csv")
+                        
+                        vodafone_validation <- create_vodafone_validation_dataset(vodafone_data)
+                        real_validation <- create_real_validation_dataset(real_data)
+                        sired_validation <- create_sired_validation_dataset(sired_data)
+                        
+                        global <- cbind(vodafone_validation, real_validation$daily_difference, sired_validation$daily_difference)
+                        names(global)[3:5] = c("Vodafone", "Ports_Airports", "Sired")
+                        
+                        p <- plot_ly(global, x = ~month, y = ~Vodafone, type = 'bar', name = 'Dati Vodafone', marker = list(color = 'red')) %>%
+                                add_trace(y = ~Ports_Airports, name = 'Dati Portuali e Aeroportuali', marker = list(color = 'rgb(0, 153, 0)')) %>%
+                                add_trace(y = ~Sired, name = 'Dati Sired', marker = list(color = 'orange')) %>%                                
+                                layout(title = "Comparazione presenze nette mensili 2016", yaxis = list(title = 'presenze nette mensili'), barmode = 'group')
+
+                })
           
                 
 
