@@ -263,7 +263,19 @@ tabItems(
                )))
           )
            
-      )))
+      ))),
+  tabItem(
+          tabName = "comparazione",
+          fluidRow(
+                  br(),
+                  column(
+                          width = 8, offset = 2,
+                          plotlyOutput("comparazione")                          
+                  )
+
+                  
+          )
+  )
   
   
   
