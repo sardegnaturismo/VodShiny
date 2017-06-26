@@ -24,14 +24,14 @@ create_vodafone_validation_dataset <- function(dataset, selected_year = 2016){
 }
 
 create_sired_validation_dataset <- function(dataset, selected_year = 2016){
-        italians <- aggregate(data = dataset, presenze_italia  ~ mese + anno, FUN = sum)
-        foreigners <- aggregate(data = dataset, presenze_stranieri  ~ mese + anno, FUN = sum)
+        italians <- aggregate(data = dataset, presenze_italia  ~ giorno + mese + anno, FUN = sum)
+        foreigners <- aggregate(data = dataset, presenze_stranieri  ~ giorno + mese + anno, FUN = sum)
         global <- cbind(italians, foreigners$presenze_stranieri)
         ## here we create a dummy variable to be able to use the 
         ## general function create_validation dataset
         global$residents <- 0
-        names(global) <- c("mese", "anno", "visitors", "foreigners", "residents")
-        global$date <- paste(global$anno, global$mese, "01", sep = "/")
+        names(global) <- c("giorno", "mese", "anno", "visitors", "foreigners", "residents")
+        global$date <- paste(global$anno, global$mese, global$giorno, sep = "/")
         global$date <- as.Date(global$date)
         
         res <- create_validation_dataset(global, selected_year)
@@ -42,12 +42,20 @@ create_real_validation_dataset <- function(dataset, selected_year = 2016, select
         date <- paste("01", dataset$mese, dataset$anno, sep = "/")
         dataset$date <- as.Date(date, "%d/%B/%Y")
         dataset$residents <- 0
-        names(dataset) <- c("poi", "anno", "mese", "visitors", "foreigners", "date", "residents")
         
-        res <- create_validation_dataset(dataset, selected_year)
-        res[1:selected_months, ]
+        arrivals <- aggregate(data = dataset, arrivi ~ month(date) + year(date), FUN = sum)
+        departures <- aggregate(data = dataset, partenze ~ month(date) + year(date), FUN = sum)
         
+        names(arrivals) <- c("month", "year", "arrivals")
+        names(departures) <- c("month", "year", "departures")
+
+        global <- cbind(arrivals, departures$departures)
+        names(global)[4] = "departures"
         
+
+        global$daily_difference <- global$arrivals - global $departures
+        global[1:selected_months, ]        
+
 }
 
 
