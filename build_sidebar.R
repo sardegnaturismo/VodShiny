@@ -46,8 +46,8 @@ build_sidebar <- function(){
         menuItem("Turismo Interno", icon = icon("bed"),
                 menuSubItem("Province", tabName = "prov_interno"),
                 menuSubItem("Comuni", tabName = "com_interno")
-                         )
-
+                         ),
+        menuItem("Comparazione Trend", icon = icon("line-chart"), tabName = "comparazione")
                 ))
         
   
