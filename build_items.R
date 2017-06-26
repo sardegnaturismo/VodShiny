@@ -268,7 +268,7 @@ tabItems(
     fluidRow(
       br(),
       column(
-        width = 8, offset = 2,
+        width = 10, offset = 1,
         plotlyOutput("comparazione")                          
       )
       
