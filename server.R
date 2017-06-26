@@ -529,7 +529,7 @@ shinyServer(function(input, output, session) {
                         p <- plot_ly(global, x = ~month, y = ~Vodafone, type = 'bar', name = 'Dati Vodafone', marker = list(color = 'red')) %>%
                                 add_trace(y = ~Ports_Airports, name = 'Dati Portuali e Aeroportuali', marker = list(color = 'rgb(0, 153, 0)')) %>%
                                 add_trace(y = ~Sired, name = 'Dati Sired', marker = list(color = 'orange')) %>%                                
-                                layout(title = "Comparazione presenze nette mensili 2016", yaxis = list(title = 'presenze nette mensili'), barmode = 'group')
+                                layout(title = "Comparazione presenze nette mensili 2016", yaxis = list(title = 'monthly net presensences'), barmode = 'group')
 
                 })
           
