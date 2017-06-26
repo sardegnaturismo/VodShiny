@@ -1,5 +1,6 @@
 require(ggplot2)
 require(plotly)
+require(DT)
 source("R/destination_by_municipalities.R")
 source("R/destination_by_provinces.R")
 source("R/covisit_tabs.R")
@@ -271,9 +272,13 @@ tabItems(
         width = 10, offset = 1,
         plotlyOutput("comparazione")                          
       )
-      
-      
-    )
+    ),br(), br(),
+    fluidRow(
+      column(
+        width = 8, offset = 1,
+        DT::dataTableOutput("valid")
+      )
+    )    
   )
   
   
