@@ -513,8 +513,7 @@ shinyServer(function(input, output, session) {
                 output$vs_sub_it <- province_curve("Medio Campidano", input)
                 output$vs_st <- render_province_st("Medio Campidano", input)
                 
-                
-                output$comparazione <- renderPlotly({
+                validation_data <- reactive({
                   vodafone_data <- fread("data/validation/vodafone_global_daily_presence.csv")
                   real_data <- fread("data/validation/global_real_arrivals_departures_partial.csv")
                   sired_data <- fread("data/validation/sired_global_daily_presence.csv")
@@ -525,7 +524,12 @@ shinyServer(function(input, output, session) {
                   
                   global <- cbind(vodafone_validation, real_validation$daily_difference, sired_validation$daily_difference)
                   names(global)[3:5] = c("Vodafone", "Ports_Airports", "Sired")
-                  
+                  global
+                })                
+                
+                
+                output$comparazione <- renderPlotly({
+                  global <- validation_data()
                   p <- plot_ly(global, x = ~month, y = ~Vodafone, type = 'bar', name = 'Dati Vodafone', marker = list(color = 'red')) %>%
                     add_trace(y = ~Ports_Airports, name = 'Dati Portuali e Aeroportuali', marker = list(color = 'rgb(0, 153, 0)')) %>%
                     add_trace(y = ~Sired, name = 'Dati Sired', marker = list(color = 'orange')) %>%                                
