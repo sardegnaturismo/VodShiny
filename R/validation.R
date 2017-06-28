@@ -38,6 +38,14 @@ create_sired_validation_dataset <- function(dataset, selected_year = 2016){
         res
 }
 
+create_sired_monthly_validation_dataset <- function(dataset){
+      res <- aggregate(data = dataset, differenza ~ mese + anno, FUN = sum)
+      res$mese <- month.name[res$mese]
+      names(res) <- c("month", "year", "daily_difference")
+      res
+      
+}
+
 create_real_validation_dataset <- function(dataset, selected_year = 2016, selected_months = 9){
         date <- paste("01", dataset$mese, dataset$anno, sep = "/")
         dataset$date <- as.Date(date, "%d/%m/%Y")

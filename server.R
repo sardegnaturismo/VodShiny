@@ -518,13 +518,15 @@ shinyServer(function(input, output, session) {
                         vodafone_data <- fread("data/validation/vodafone_global_daily_presence.csv")
                         real_data <- fread("data/validation/global_real_arrivals_departures_partial.csv")
                         sired_data <- fread("data/validation/sired_global_daily_presence.csv")
+                        sired_data2 <- fread("data/validation/sired_monthly_arrivals_departures.csv")
                         
                         vodafone_validation <- create_vodafone_validation_dataset(vodafone_data)
                         real_validation <- create_real_validation_dataset(real_data)
                         sired_validation <- create_sired_validation_dataset(sired_data)
+                        sired_validation2 <- create_sired_monthly_validation_dataset(sired_data2)
                         
-                        global <- cbind(vodafone_validation, real_validation$daily_difference, sired_validation$daily_difference)
-                        names(global)[3:5] = c("Vodafone", "Ports_Airports", "Sired")
+                        global <- cbind(vodafone_validation, real_validation$daily_difference, sired_validation$daily_difference, sired_validation2$daily_difference)
+                        names(global)[3:6] = c("Vodafone", "Ports_Airports", "Sired", "Sired2")
                         global
                 })
                 
@@ -533,14 +535,15 @@ shinyServer(function(input, output, session) {
                         global <- validation_data()
                         p <- plot_ly(global, x = ~month, y = ~Vodafone, type = 'bar', name = 'Dati Vodafone', marker = list(color = 'red')) %>%
                                 add_trace(y = ~Ports_Airports, name = 'Dati Portuali e Aeroportuali', marker = list(color = 'rgb(0, 153, 0)')) %>%
-                                add_trace(y = ~Sired, name = 'Dati Sired', marker = list(color = 'orange')) %>%                                
+                                add_trace(y = ~Sired, name = 'Dati Sired', marker = list(color = 'orange')) %>%
+                                add_trace(y = ~Sired2, name = 'Dati Sired 2', marker = list(color = 'purple')) %>%                          
                                 layout(title = "Comparazione presenze nette mensili 2016", yaxis = list(title = 'monthly net presensences'), barmode = 'group')
 
                 })
                 
                 output$valid <- DT::renderDataTable({
                         validation_dataset <- validation_data()
-                        DT::datatable(validation_dataset[, c(1,3,4,5)],  colnames = c("Month", "Vodafone", "Ports Airports", "SiRed"))
+                        DT::datatable(validation_dataset[, c(1,3,4,5,6)],  colnames = c("Month", "Vodafone", "Ports Airports", "SiRed", "SiRed2"))
                         
                 })
                 
