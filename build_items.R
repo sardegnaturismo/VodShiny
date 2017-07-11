@@ -254,7 +254,7 @@ tabItems(
                   ),br(), 
       fluidRow(     
            column(
-             width = 9, offset = 1, 
+             width = 10, offset = 1, 
              wellPanel(id="prov_well",
                tags$fieldset(
                  class = "fieldgroup",
