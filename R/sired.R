@@ -6,6 +6,7 @@ get_sired_visitors_it <- function(dataset, perc = 1.0){
 
     #compattiano le colonne Bolzano e Trento in Trentino
     Trentino <- dataset[,5] + dataset[,6]
+    names(Trentino) = "Trentino"
     tmp <- subset(dataset, select = -c(Bolzano, Trento))
     d1 <- subset(tmp, select = names(tmp)[1:4])
     d2 <- subset(tmp, select = names(tmp)[5:ncol(tmp)])
@@ -84,6 +85,7 @@ get_sired_daily_by_prov_st <- function(dataset, province){
 ### Provenienza visitatori italiani per provincia
 get_sired_italian_visitors_by_province <- function(dataset, province_name, perc = 0){
         Trentino <- dataset[,5] + dataset[,6]
+        names(Trentino) <- "Trentino"
         tmp <- subset(dataset, select = -c(Bolzano, Trento))
         d1 <- subset(tmp, select = names(tmp)[1:4])
         d2 <- subset(tmp, select = names(tmp)[5:ncol(tmp)])
