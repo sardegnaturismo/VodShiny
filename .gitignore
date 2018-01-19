@@ -5,6 +5,7 @@
 .Ruserdata
 data/*
 data/validation/*
+data/*.csv
 docs/
 .Rmd
 .html
