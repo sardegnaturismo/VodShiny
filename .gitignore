@@ -4,6 +4,7 @@
 .RData
 .Ruserdata
 data/*
+data/validation/
 docs/
 .Rmd
 .html
