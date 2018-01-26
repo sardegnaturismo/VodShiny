@@ -155,6 +155,7 @@ tabItems(
         tabItem(
                 tabName = "prov_interno",
                 fluidPage(
+                        fluidRow(br(), br()),
                         fluidRow(
                                 column(
                                         width = 4,
@@ -168,7 +169,7 @@ tabItems(
                                         
                                 ),
                                 column(
-                                        width = 7,
+                                        width = 8,
                                         plotlyOutput("destination_provinces")
                                 )
                         ),
@@ -184,6 +185,7 @@ tabItems(
         tabItem(
                 tabName = "com_interno",
                 fluidPage(
+                        fluidRow(br(), br()),
                         fluidRow(
                                 column(
                                         width = 4,
