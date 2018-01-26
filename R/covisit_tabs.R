@@ -1,4 +1,5 @@
 require(data.table)
+source("R/covisit.R")
 
 poi <- fread("data/sardegna_covisitation_all_poi_id.csv")
 locations = sort(unique(poi$origin))
@@ -7,8 +8,8 @@ municipalities <- presence$comune_name
 
 
 create_tab <- function(tabname, plot_id1, plot_id2, check_group_id){
-        
-              
+     
+      
       tab <-  tabItem(
                 tabName = tabname,
                 fluidPage(
@@ -25,7 +26,7 @@ create_tab <- function(tabname, plot_id1, plot_id2, check_group_id){
                                        ),         
                                 column(
                                         width = 8,
-                                        h3("Co-visite tra Punti di interesse (fonte Vodafone)", id="region_title"),br(),br(),
+                                        h3("Co-visite tra punti di interesse (fonte Vodafone)", id="region_title"),br(),br(),
                                         plotlyOutput(plot_id1),
                                         br(),
                                         br(),
