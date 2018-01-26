@@ -27,9 +27,25 @@ get_covisits <- function(dataset, cust_class = NULL, chosen_localities){
                 }
         }
         
+        chosen_localities <- adapt_local_name(chosen_localities)
+        colnames(res) = chosen_localities
+        row.names(res) = chosen_localities
         res
         
         
         
         
+}
+
+adapt_local_name <- function(localities){
+  
+    result <- sapply(localities, FUN = function(x) {
+      if (tolower(x) != 'porto_torres'){
+        gsub("_", " di ", x)
+      }else{
+        gsub("_", " ", x)
+      }
+      
+    })
+  
 }
