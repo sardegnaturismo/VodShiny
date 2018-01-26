@@ -49,3 +49,19 @@
         text-align: center;
         
 }
+
+
+.irs .irs-bar {
+border-top-color: purple;
+border-bottom-color: purple;
+} 
+
+.irs .irs-bar-edge {
+border-color: purple;
+}
+
+.irs .irs-single, .irs .irs-bar-edge, .irs .irs-bar {
+background: purple;
+}
+
+
