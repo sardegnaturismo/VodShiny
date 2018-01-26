@@ -27,10 +27,13 @@ shinyServer(function(input, output, session) {
                 #par(mar = c(5,6,4,2))
                 
                 if (input$color == 'colore'){
-                        selected_color = 'rgb(158,202,225)'
-                        line_color = 'rgb(8,48,107)'
+                        #selected_color = 'rgb(158,202,225)'
+                        selected_color = brewer.pal(9, "Purples")[1:input$th]
+                        line_color = "purple"
+                        #line_color = 'rgb(8,48,107)'
                 }else{
-                        selected_color = 'rgb(211,211,211)'
+                        #selected_color = 'rgb(211,211,211)'
+                        selected_color = brewer.pal(9, "Greys")[1:input$th]
                         line_color = 'rbg(112,128,144)'
                 }
 
@@ -38,7 +41,7 @@ shinyServer(function(input, output, session) {
                 #barplot(height = selected_data[1:input$th,2], names.arg = abbreviate(selected_data[1:input$th,1], minlength = 10), main = input$municipality1, xlab = "Numero medio di visitatori", las=1, horiz = T, col=selected_color)
                 labels <- filter_municipalities(selected_data[1:input$th, 1])
                 
-                
+                m = list(l = 80)
                 p <- plot_ly(
                         data = selected_data,
                         y = labels,
@@ -49,7 +52,7 @@ shinyServer(function(input, output, session) {
                                       line = list(color = line_color,
                                                   width = 1.5))
                         # marker = list(color = selected_color)
-                ) %>% layout(title = paste("Comune di destinazione: ", input$municipality1, "(fonte Vodafone)"), yaxis = list(tickfont = list(size = 7, color = 'black')), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)))        
+                ) %>% layout(title = paste(input$municipality1, ": visitatori per Comune di provenienza (fonte Vodafone)", sep = ''), yaxis = list(tickfont = list(size = 9, color = 'black')), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)), margin = m)        
                 p
                 
                 })
@@ -57,10 +60,17 @@ shinyServer(function(input, output, session) {
         output$plot2 <- renderPlotly({
                 dataset <- fread("data/sardegna_destinations_for_municipalities.csv", encoding = 'Latin-1')
                 selected_data <- destination_by_month(dataset, municipality_name = input$municipality1)
-                # plot(x = 1:13, y = selected_data$visitors, type = 'o', xaxt = 'n', ylab = "Visitatori", xlab = "Periodo", col = 'blue', main = input$municipality2)
-                # grid()
-                # axis(1, at = 1:13, labels = selected_data$period)
-                p <- plot_ly(data = selected_data, x = ~period, y = ~visitors, mode = 'lines+markers', type = 'scatter')
+                
+                if (input$color == 'colore'){
+                  selected_color = "purple"
+                  #line_color = 'rgb(8,48,107)'
+                }else{
+                  selected_color = 'rgb(211,211,211)'
+                  #line_color = 'rbg(112,128,144)'
+                }
+                
+                m <- list(l = 80)
+                p <- plot_ly(data = selected_data, x = ~period, y = ~visitors, mode = 'lines+markers', type = 'scatter', marker = list(color = selected_color), line = list(color = selected_color)) %>% layout(margin = m, xaxis = list(title = "Periodo"), yaxis = list(title = "Visitatori"))
                 #layout(title = paste('Comune di destinazione: ', input$municipality2), )        
                         
                 
@@ -82,16 +92,16 @@ shinyServer(function(input, output, session) {
                 # par(bg='transparent')
                 # pie(province_data[,2], labels = lbls, main = input$province1)
                 p <- plot_ly(province_data, labels = ~origin, values = ~visitors, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
-                             text = ~paste(origin, ":", visitors), marker = list(colors = colors, line = list(color = '#FFFFFF', width = 1)), showlegend = TRUE) %>%
-                        layout(title = paste("Provincia di Destinazione: ", input$province1, "(fonte Vodafone)"), showlegend = T)                
+                             text = ~paste(origin, ":", visitors), marker = list(colors = colors, line = list(color = '#FFFFFF', width = 1))) %>%
+                        layout(title = paste(input$province1, ": visitatori per provincia di origine (fonte Vodafone)", sep = ''), showlegend = T)                
           }else{
                   # par(bg = 'transparent')
                   # barplot(height = province_data[,2], names.arg = prov_symbols, main = input$province1, col = c(rainbow(length(province_data[,1]))),
                   #         xlab = "Numero di visitatori", ylab = "Province di origine", horiz = T
                 selected_color = c(rainbow(length(province_data[,1])))  
-                p <- plot_ly(data = province_data, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color)) %>%
-                        layout(title = paste("Provincia di Destinazione: ", input$province1, "(fonte Vodafone)"),  
-                               yaxis = list(tickfont = list(size = 8)), xaxis = list(title = "Provincia di provenienza", tickfont = list(size = 8)))
+                p <- plot_ly(data = province_data, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color), text = ~paste(origin, ":", visitors), hoverinfo = 'text') %>%
+                        layout(title = paste("Provincia di Destinazione: ", input$province1, "(fonte Vodafone)"),
+                               yaxis = list(title = "Visitatori", tickfont = list(size = 8)), xaxis = list(title = "Provincia di provenienza", tickfont = list(size = 8)))
           }
           
           
@@ -324,8 +334,11 @@ shinyServer(function(input, output, session) {
                            od <- get_covisits(dataset = cov_data, cust_class = NULL, chosen_localities = localities)                          
                         }
                         
-                        p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, colors = colorRamp(c("blue", "red")), type = "heatmap") %>%
-                        layout(title = "Co-visite Totali (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))        
+                        m <- list(l = 150, b = 120)
+                        
+                        
+                        p <- plot_ly(x = colnames(od), y = row.names(od), z = od, colors = colorRamp(c("blue", "red")), type = "heatmap") %>%
+                        layout(title = "Co-visite totali (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)), margin = m)        
         
                         
                         
@@ -340,9 +353,9 @@ shinyServer(function(input, output, session) {
                         if (length(localities) > 1){
                                 od <- get_covisits(cov_data, "resident", localities)
                         }
-
-                        p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, type = "heatmap") %>%
-                                layout(title = "Co-visite Residenti (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))
+                        m <- list(l = 150, b = 120)
+                        p <- plot_ly(x = colnames(od), y = row.names(od), z = od, type = "heatmap") %>%
+                                layout(title = "Co-visite residenti (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)), margin = m)
 
                 })
                 
@@ -353,9 +366,9 @@ shinyServer(function(input, output, session) {
                         if (length(localities) > 1){
                                 od <- get_covisits(cov_data, "visitor", localities)
                         }
-                        
-                        p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, colors = colorRamp(c("darkgreen", "white")), type = "heatmap") %>%
-                                layout(title = "Co-visite Visitatori Italiani (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))
+                        m <- list(l = 150, b = 120)          
+                        p <- plot_ly(x = colnames(od), y = row.names(od), z = od, colors = colorRamp(c("darkseagreen", "darkgreen")), type = "heatmap") %>%
+                                layout(title = "Co-visite visitatori italiani (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)), margin = m)
                 })
                 
                 
@@ -366,9 +379,9 @@ shinyServer(function(input, output, session) {
                         if (length(localities) > 1){
                                 od <- get_covisits(cov_data, "foreign", localities)
                         }
-                        
-                        p <- plot_ly(x = abbreviate(colnames(od),12), y = abbreviate(row.names(od),12), z = od, colors = colorRamp(c("purple", "white")), type = "heatmap") %>%
-                                layout(title = "Co-visite Visitatori Stranieri (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)))                        
+                        m <- list(l = 150, b = 120)
+                        p <- plot_ly(x = colnames(od), y = row.names(od), z = od, colors = colorRamp(c("plum3", "darkmagenta")), type = "heatmap") %>%
+                                layout(title = "Co-visite visitatori stranieri (fonte Vodafone)", yaxis = list(tickfont = list(size = 8)), xaxis = list(title="POI", tickfont = list(size = 8)), margin = m)                        
                         
                         
                 })
