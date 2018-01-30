@@ -34,7 +34,8 @@ shinyServer(function(input, output, session) {
                 }else{
                         #selected_color = 'rgb(211,211,211)'
                         selected_color = brewer.pal(9, "Greys")[1:input$th]
-                        line_color = 'rbg(112,128,144)'
+                        line_color = 'rgb(112,128,144)'
+                        #line_color = "darkgrey"
                 }
 
                 #print(selected_color)
@@ -65,7 +66,7 @@ shinyServer(function(input, output, session) {
                   selected_color = "purple"
                   #line_color = 'rgb(8,48,107)'
                 }else{
-                  selected_color = 'rgb(211,211,211)'
+                  selected_color = 'rgb(105,105,105)'
                   #line_color = 'rbg(112,128,144)'
                 }
                 
