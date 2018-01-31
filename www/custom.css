@@ -52,16 +52,19 @@
 
 
 .irs .irs-bar {
-border-top-color: purple;
-border-bottom-color: purple;
+border-top-color: red;
+border-bottom-color: red;
 } 
 
 .irs .irs-bar-edge {
-border-color: purple;
+border-color: red;
 }
 
 .irs .irs-single, .irs .irs-bar-edge, .irs .irs-bar {
-background: purple;
+background: red;
 }
 
+.well {
+  margin-top: 20px;
+}
 
