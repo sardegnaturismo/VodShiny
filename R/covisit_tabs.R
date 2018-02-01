@@ -26,11 +26,19 @@ create_tab <- function(tabname, plot_id1, plot_id2, check_group_id){
                                        ),         
                                 column(
                                         width = 8,
-                                        h3("Co-visite tra punti di interesse (fonte Vodafone)", id="region_title"),br(),br(),
-                                        plotlyOutput(plot_id1),
-                                        br(),
-                                        br(),
-                                        plotlyOutput(plot_id2)                                        
+                                        div(h3("Co-visite tra punti di interesse (fonte Vodafone)"),
+                                            h5("periodo: Settembre 2015 - Settembre 2016"),
+                                            id="region_title"),
+                                        wellPanel(
+                                             HTML("Il termine <b>co-visita </b> indica la presenza dello stesso utente in una coppia di localit&agrave;, 
+                                             indipendentemente dalla durata della visita e dalla direzione del movimento. 
+                                             Esprime in sostanza una connessione tra due localit&agrave; o due punti di interesse.")
+                                          
+                                        ),
+                                        plotlyOutput(plot_id1)
+                                        # br(),
+                                        # br(),
+                                        # plotlyOutput(plot_id2)                                        
                                       )
                                  )
                         
