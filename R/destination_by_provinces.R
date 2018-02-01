@@ -5,6 +5,7 @@ destination_by_provinces <- function(dataset, province_name){
         res <- aggregate(d$unique_visitors ~ d$origin_province, FUN = sum)
         names(res) <- c("origin", "visitors")
         res <- res[order(res$visitors, decreasing = T), ]
+        res$origin <- factor(res$origin, levels = res$origin)
         res
         
 }
