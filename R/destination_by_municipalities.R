@@ -14,7 +14,8 @@ destination_by_municipalities <- function(dataset, municipality_name){
   
   res <- aggregate(d$unique_visitors ~ d$origin_municipality, FUN = sum)
   names(res) <- c("origin", "visitors")
-  res <- res[order(res$visitors, decreasing = T), ]
+  res <- res[order(res$visitors, decreasing = F), ]
+  res$origin <- factor(res$origin, levels = res$origin)
   res
 }
 
