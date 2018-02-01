@@ -30,7 +30,7 @@ tabItems(
         p("Lo studio utilizza dati SiRED e dati anonimi e aggregati della rete di Vodafone Italia, elaborati mediante metodi di data science per fornire una visione complessiva dei visitatori in Sardegna"),
         tags$div(
           br(),
-          tags$img(src="home2.jpg", class="img-rounded"),
+          tags$img(src="gonone2.jpg", class="img-rounded"),
           class="well"
         )
         
@@ -219,8 +219,10 @@ tabItems(
                         )
                         )
                 ),
-            create_tab("cov_tot", "h_cov_tot", "h_cov_res", "origins1"),
-            create_tab("cov_vis", "h_cov_it", "h_cov_st", "origins2"),
+            create_tab("cov_tot", "h_cov_tot", "", "origins1"),
+            create_tab("cov_res", "h_cov_res", "", "origins2"),
+            create_tab("cov_ita", "h_cov_it", "", "origins3"),
+            create_tab("cov_str", "h_cov_st", "", "origins4"),
             tabItem(
                   tabName = "com_by_prov",
                   fluidPage(
