@@ -96,6 +96,7 @@ shinyServer(function(input, output, session) {
           print(input$diagram_type)
           # par(mar = c(10,14,4,2))
           prov_symbols = get_province_symbols(province_data[,1])
+          m = list(t = 70)
           
           if (input$diagram_type == "pie"){
                 # print(lbls)
@@ -103,14 +104,14 @@ shinyServer(function(input, output, session) {
                 # pie(province_data[,2], labels = lbls, main = input$province1)
                 p <- plot_ly(province_data, labels = ~origin, values = ~visitors, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
                              text = ~origin, marker = list(colors = colors, line = list(color = '#FFFFFF', width = 1))) %>%
-                        layout(title = paste(input$province1, ": visitatori per provincia di origine (fonte Vodafone)", sep = ''), showlegend = T)                
+                        layout(title = paste(input$province1, ": visitatori per provincia di origine (fonte Vodafone)<br>periodo: Settembre 2015 - Settembre 2016", sep = ''), showlegend = T, margin = m)                
           }else{
                   # par(bg = 'transparent')
                   # barplot(height = province_data[,2], names.arg = prov_symbols, main = input$province1, col = c(rainbow(length(province_data[,1]))),
                   #         xlab = "Numero di visitatori", ylab = "Province di origine", horiz = T
                 pct = round(100*province_data[,2]/sum(province_data[,2]), digits = 1)
                 selected_color = rev(brewer.pal(9, "Reds"))
-                m = list(t = 50)
+                
                 p <- plot_ly(data = province_data, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color, line = list(color = "red", width = 1.5)), text = ~paste(origin, ": ", pct, "%", sep = ''), hoverinfo = 'text') %>%
                         layout(title = paste("Provincia di Destinazione: ", input$province1, "(fonte Vodafone) <br>periodo: Settembre 2015 - Settembre 2016"),
                                yaxis = list(title = "Visitatori (%)", showticklabels = FALSE), xaxis = list(title = "Provincia di provenienza", tickfont = list(size = 10)), margin = m)
