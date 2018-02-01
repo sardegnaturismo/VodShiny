@@ -6,6 +6,7 @@ require(dplyr)
 require(plotly)
 require(scales)
 require(RColorBrewer)
+library(htmltools)
 source("R/destination_by_municipalities.R")
 source("R/destination_by_provinces.R")
 source("R/presence.R")
@@ -24,12 +25,13 @@ shinyServer(function(input, output, session) {
                 dataset <- fread("data/sardegna_destinations_for_municipalities.csv", encoding = 'Latin-1')
                 selected_data <- destination_by_municipalities(dataset, municipality_name = input$municipality1)
                 print(selected_data)
+                print(levels(selected_data$origin))
                 #par(mar = c(5,6,4,2))
                 
                 if (input$color == 'colore'){
                         #selected_color = 'rgb(158,202,225)'
-                        selected_color = brewer.pal(9, "Purples")[1:input$th]
-                        line_color = "purple"
+                        selected_color = brewer.pal(9, "Reds")[1:input$th]
+                        line_color = "red"
                         #line_color = 'rgb(8,48,107)'
                 }else{
                         #selected_color = 'rgb(211,211,211)'
@@ -40,21 +42,29 @@ shinyServer(function(input, output, session) {
 
                 #print(selected_color)
                 #barplot(height = selected_data[1:input$th,2], names.arg = abbreviate(selected_data[1:input$th,1], minlength = 10), main = input$municipality1, xlab = "Numero medio di visitatori", las=1, horiz = T, col=selected_color)
-                labels <- filter_municipalities(selected_data[1:input$th, 1])
-                
-                m = list(l = 80)
+                labels <- filter_municipalities(tail(selected_data[, 1], input$th))
+                labels <- factor(x = labels, levels = labels)
+                selected_data <- data.frame(labels, tail(selected_data[, 2], input$th))
+                names(selected_data) <- c("origin", "visitors")
+                pct = round(100*selected_data[,2]/sum(selected_data[,2]), digits = 1)
+                pct <- tail(pct, input$th)
+                m = list(l = 120, t = 60)
+                t =  "ciao <br> periodo: settembre 2015 - settembre 2016<br><br>"
                 p <- plot_ly(
                         data = selected_data,
-                        y = labels,
-                        x = selected_data[1:input$th,2],
+                        y = ~origin,
+                        x = ~visitors,
                         type = "bar",
                         orientation = 'h',
                         marker = list(color = selected_color,
                                       line = list(color = line_color,
-                                                  width = 1.5))
+                                                  width = 1.5)),
+                        text = ~paste(origin, ": ", pct, "%", sep = ''),
+                        hoverinfo = 'text'
                         # marker = list(color = selected_color)
-                ) %>% layout(title = paste(input$municipality1, ": visitatori per Comune di provenienza (fonte Vodafone)", sep = ''), yaxis = list(tickfont = list(size = 9, color = 'black')), xaxis = list(title="Numero medio di visitatori", tickfont = list(size = 8)), margin = m)        
-                p
+                        
+                ) %>% layout(title = paste(input$municipality1, ": visitatori per Comune di provenienza (fonte Vodafone)<br>periodo: Settembre 2015 - Settembre 2016"), yaxis = list(title = "", tickfont = list(size = 9, color = 'black')), xaxis = list(title="Visitatori (%)", tickfont = list(size = 8)), margin = m)        
+               
                 
                 })
         
@@ -63,15 +73,16 @@ shinyServer(function(input, output, session) {
                 selected_data <- destination_by_month(dataset, municipality_name = input$municipality1)
                 
                 if (input$color == 'colore'){
-                  selected_color = "purple"
+                  selected_color = "red"
                   #line_color = 'rgb(8,48,107)'
                 }else{
                   selected_color = 'rgb(105,105,105)'
                   #line_color = 'rbg(112,128,144)'
                 }
-                
-                m <- list(l = 80)
-                p <- plot_ly(data = selected_data, x = ~period, y = ~visitors, mode = 'lines+markers', type = 'scatter', marker = list(color = selected_color), line = list(color = selected_color)) %>% layout(margin = m, xaxis = list(title = "Periodo"), yaxis = list(title = "Visitatori"))
+                pct = round(100*selected_data[,2]/sum(selected_data[,2]), digits = 1)
+                main_title = paste(input$municipality1, ": ", "turismo interno per mese (fonte Vodafone)\nperiodo: Settembre 2015 - Settembre 2016", sep = '')
+                m <- list(l = 120, b = 100)
+                p <- plot_ly(data = selected_data, x = ~period, y = ~visitors, mode = 'lines+markers', type = 'scatter', hoverinfo = 'text', text = ~paste(period, ": ", pct, "%", sep = ''), marker = list(color = selected_color), line = list(color = selected_color)) %>% layout(title = main_title, margin = m, xaxis = list(title = "Mese"), yaxis = list(title = "Visitatori (%)", showticklabels = FALSE))
                 #layout(title = paste('Comune di destinazione: ', input$municipality2), )        
                         
                 
@@ -87,22 +98,22 @@ shinyServer(function(input, output, session) {
           prov_symbols = get_province_symbols(province_data[,1])
           
           if (input$diagram_type == "pie"){
-                pct = round(100*province_data[,2]/sum(province_data[,2]), digits = 2)
-                lbls <- paste(prov_symbols, pct) # add percents to labels 
-                lbls <- paste(lbls,"%",sep="") # ad % to labels 
+                # print(lbls)
                 # par(bg='transparent')
                 # pie(province_data[,2], labels = lbls, main = input$province1)
                 p <- plot_ly(province_data, labels = ~origin, values = ~visitors, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
-                             text = ~paste(origin, ":", visitors), marker = list(colors = colors, line = list(color = '#FFFFFF', width = 1))) %>%
+                             text = ~origin, marker = list(colors = colors, line = list(color = '#FFFFFF', width = 1))) %>%
                         layout(title = paste(input$province1, ": visitatori per provincia di origine (fonte Vodafone)", sep = ''), showlegend = T)                
           }else{
                   # par(bg = 'transparent')
                   # barplot(height = province_data[,2], names.arg = prov_symbols, main = input$province1, col = c(rainbow(length(province_data[,1]))),
                   #         xlab = "Numero di visitatori", ylab = "Province di origine", horiz = T
-                selected_color = c(rainbow(length(province_data[,1])))  
-                p <- plot_ly(data = province_data, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color), text = ~paste(origin, ":", visitors), hoverinfo = 'text') %>%
-                        layout(title = paste("Provincia di Destinazione: ", input$province1, "(fonte Vodafone)"),
-                               yaxis = list(title = "Visitatori", tickfont = list(size = 8)), xaxis = list(title = "Provincia di provenienza", tickfont = list(size = 8)))
+                pct = round(100*province_data[,2]/sum(province_data[,2]), digits = 1)
+                selected_color = rev(brewer.pal(9, "Reds"))
+                m = list(t = 50)
+                p <- plot_ly(data = province_data, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color, line = list(color = "red", width = 1.5)), text = ~paste(origin, ": ", pct, "%", sep = ''), hoverinfo = 'text') %>%
+                        layout(title = paste("Provincia di Destinazione: ", input$province1, "(fonte Vodafone) <br>periodo: Settembre 2015 - Settembre 2016"),
+                               yaxis = list(title = "Visitatori (%)", showticklabels = FALSE), xaxis = list(title = "Provincia di provenienza", tickfont = list(size = 10)), margin = m)
           }
           
           
@@ -335,7 +346,7 @@ shinyServer(function(input, output, session) {
                            od <- get_covisits(dataset = cov_data, cust_class = NULL, chosen_localities = localities)                          
                         }
                         
-                        m <- list(l = 150, b = 120)
+                        m <- list(l = 150, b = 80)
                         
                         
                         p <- plot_ly(x = colnames(od), y = row.names(od), z = od, colors = colorRamp(c("blue", "red")), type = "heatmap") %>%
@@ -347,7 +358,7 @@ shinyServer(function(input, output, session) {
                 
                 output$h_cov_res <- renderPlotly({
                         cov_data <- fread("data/sardegna_covisitation_all_poi_id.csv")
-                        origins <- input[["origins1"]]
+                        origins <- input[["origins2"]]
                         # destinations <- input$dest_all
                         localities <- origins
                         od <- NULL
@@ -362,7 +373,7 @@ shinyServer(function(input, output, session) {
                 
                 output$h_cov_it <- renderPlotly({
                         cov_data <- fread("data/sardegna_covisitation_all_poi_id.csv")
-                        localities <- input[["origins2"]]
+                        localities <- input[["origins3"]]
                         od <- NULL
                         if (length(localities) > 1){
                                 od <- get_covisits(cov_data, "visitor", localities)
@@ -375,7 +386,7 @@ shinyServer(function(input, output, session) {
                 
                 output$h_cov_st <- renderPlotly({
                         cov_data <- fread("data/sardegna_covisitation_all_poi_id.csv")
-                        localities <- input[["origins2"]]
+                        localities <- input[["origins4"]]
                         od <- NULL
                         if (length(localities) > 1){
                                 od <- get_covisits(cov_data, "foreign", localities)
