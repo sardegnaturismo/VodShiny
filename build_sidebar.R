@@ -39,8 +39,10 @@ build_sidebar <- function(){
                 #         menuItem("Comuni", 
                 #                         menuSubItem("Provenienza visitatori", tabName = "com_by_prov"))),
         menuItem("Co-visite", icon = icon("share-alt-square"),
-                menuSubItem("Totali e Residenti", tabName = "cov_tot"),
-                menuSubItem("Visitatori italiani e stranieri", tabName = "cov_vis")
+                menuSubItem("Totali", tabName = "cov_tot"),
+                menuSubItem("Residenti", tabName = "cov_res"),
+                menuSubItem("Visitatori italiani", tabName = "cov_ita"),
+                menuSubItem("Visitatori stranieri", tabName = "cov_str")
                 ),
                          
         menuItem("Turismo Interno", icon = icon("bed"),
