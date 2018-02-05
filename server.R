@@ -1,7 +1,6 @@
 require(shiny)
 require(data.table)
 require(shinydashboard)
-require(data.table)
 require(dplyr)
 require(plotly)
 require(scales)
