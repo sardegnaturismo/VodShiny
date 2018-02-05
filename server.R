@@ -49,7 +49,7 @@ shinyServer(function(input, output, session) {
                 pct = round(100*selected_data[,2]/sum(selected_data[,2]), digits = 1)
                 pct <- tail(pct, input$th)
                 m = list(l = 120, t = 60)
-                t =  "ciao <br> periodo: settembre 2015 - settembre 2016<br><br>"
+                # t =  "ciao <br> periodo: settembre 2015 - settembre 2016<br><br>"
                 p <- plot_ly(
                         data = selected_data,
                         y = ~origin,
@@ -63,7 +63,7 @@ shinyServer(function(input, output, session) {
                         hoverinfo = 'text'
                         # marker = list(color = selected_color)
                         
-                ) %>% layout(title = paste(input$municipality1, ": visitatori per Comune di provenienza (fonte Vodafone)<br>periodo: Settembre 2015 - Settembre 2016"), yaxis = list(title = "", tickfont = list(size = 9, color = 'black')), xaxis = list(title="Visitatori (%)", tickfont = list(size = 8)), margin = m)        
+                ) %>% layout(title = paste(input$municipality1, ": turismo interno per Comune di provenienza (fonte Vodafone)<br>periodo: Settembre 2015 - Settembre 2016"), yaxis = list(title = "", tickfont = list(size = 9, color = 'black')), xaxis = list(title="Visitatori (%)", tickfont = list(size = 8)), margin = m)        
                
                 
                 })
@@ -104,7 +104,7 @@ shinyServer(function(input, output, session) {
                 # pie(province_data[,2], labels = lbls, main = input$province1)
                 p <- plot_ly(province_data, labels = ~origin, values = ~visitors, type = 'pie', textinfo = 'percent', hoverinfo = 'text',
                              text = ~origin, marker = list(colors = colors, line = list(color = '#FFFFFF', width = 1))) %>%
-                        layout(title = paste(input$province1, ": visitatori per provincia di origine<br>periodo: Settembre 2015 - Settembre 2016<br> (fonte Vodafone)", sep = ''), showlegend = T, margin = m)                
+                        layout(title = paste(input$province1, ": turismo interno per provincia di origine<br>periodo: Settembre 2015 - Settembre 2016<br> (fonte Vodafone)", sep = ''), showlegend = T, margin = m)                
           }else{
                   # par(bg = 'transparent')
                   # barplot(height = province_data[,2], names.arg = prov_symbols, main = input$province1, col = c(rainbow(length(province_data[,1]))),
@@ -113,7 +113,7 @@ shinyServer(function(input, output, session) {
                 selected_color = rev(brewer.pal(9, "Reds"))
                 
                 p <- plot_ly(data = province_data, x = ~origin, y = ~visitors, type = 'bar', marker = list(color = selected_color, line = list(color = "red", width = 1.5)), text = ~paste(origin, ": ", pct, "%", sep = ''), hoverinfo = 'text') %>%
-                        layout(title = paste(input$province1, ": visitatori per provincia di origine<br>periodo: Settembre 2015 - Settembre 2016<br>(fonte Vodafone)"),
+                        layout(title = paste(input$province1, ": turismo interno per provincia di origine<br>periodo: Settembre 2015 - Settembre 2016<br>(fonte Vodafone)"),
                                yaxis = list(title = "Visitatori (%)", showticklabels = FALSE), xaxis = list(title = "Provincia di provenienza", tickfont = list(size = 10)), margin = m)
           }
           
