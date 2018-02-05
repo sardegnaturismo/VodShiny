@@ -155,7 +155,14 @@ tabItems(
         tabItem(
                 tabName = "prov_interno",
                 fluidPage(
-                        fluidRow(br(), br()),
+                        fluidRow(
+                          div(class = "jumbotron", 
+                              h2("Turismo interno per provincia", class='text-center'),br(),
+                              p(HTML("L'analisi monitora le utenze di telefonia mobile localizzate abitualmente nel territorio sardo. Nel periodo di riferimento considerato, per ciascuna <b>provincia</b>, viene rappresentata 
+                                la <b>percentuale di visitatori</b> provenienti dalle altre province sarde, considerando esclusivamente visite di durata compresa tra i 2 ed i 30 giorni.")
+                              ))
+                          
+                        ),br(),
                         fluidRow(
                                 column(
                                         width = 4,
@@ -185,7 +192,14 @@ tabItems(
         tabItem(
                 tabName = "com_interno",
                 fluidPage(
-                        fluidRow(br(), br()),
+                  fluidRow(
+                    div(class = "jumbotron", 
+                        h2("Turismo interno per comune", class='text-center'),br(),
+                        p(HTML("L'analisi monitora le utenze di telefonia mobile localizzate abitualmente nel territorio sardo. Nel periodo di riferimento considerato, per ciascun <b>comune</b>, viene rappresentata 
+                          la <b>percentuale di visitatori</b> provenienti dagli altri comuni sardi, considerando esclusivamente visite di durata compresa tra i 2 ed i 30 giorni.<br> 
+                          <b>NOTA</b>: Sono incluse solo destinazioni che ricevono almeno 50 visitatori in un mese.")
+                        ))
+                    ),br(),
                         fluidRow(
                                 column(
                                         width = 4,
