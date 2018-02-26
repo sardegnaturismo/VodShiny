@@ -15,7 +15,7 @@ source("R/sired.R")
 source("R/outputs.R")
 
 
-
+if (!interactive()) sink(stderr(), type = "output")
 
 shinyServer(function(input, output, session) {
   
