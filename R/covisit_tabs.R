@@ -32,7 +32,7 @@ create_tab <- function(tabname, plot_id1, plot_id2, check_group_id){
                                         wellPanel(
                                              HTML("Il termine <b>co-visita </b> indica la presenza dello stesso utente in una coppia di localit&agrave;, 
                                              indipendentemente dalla durata della visita e dalla direzione del movimento. 
-                                             Esprime in sostanza una connessione tra due localit&agrave; o due punti di interesse.")
+                                             Esprime in sostanza una connessione tra due localit&agrave; o due punti di interesse. E' possibile selezionare l'insieme dei punti di interesse rispetto ai quali effettuare il confronto dalla lista accanto.")
                                           
                                         ),
                                         plotlyOutput(plot_id1)
