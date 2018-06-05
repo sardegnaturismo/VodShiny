@@ -52,7 +52,7 @@ shinyServer(function(input, output, session) {
                 p <- plot_ly(
                         data = selected_data,
                         y = ~origin,
-                        x = ~visitors,
+                        x = ~pct,
                         type = "bar",
                         orientation = 'h',
                         marker = list(color = selected_color,
