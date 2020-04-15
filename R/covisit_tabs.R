@@ -19,7 +19,7 @@ create_tab <- function(tabname, plot_id1, plot_id2, check_group_id){
                                         wellPanel(
                                                 tags$fieldset(
                                                                 checkboxGroupInput(check_group_id, "Punti di interesse", choices = locations, selected = locations[1:10])
-                                                                #selectInput("origin_all", "POI", choices = locations, multiple = T, selected = locations[1:4])
+                                                                
                                                               )
                                                  )
                                        ),         
